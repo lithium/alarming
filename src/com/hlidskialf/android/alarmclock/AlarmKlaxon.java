@@ -59,13 +59,13 @@ class AlarmKlaxon implements Alarms.AlarmSettings {
     private KillerCallback mKillerCallback;
 
 
-    static synchronized AlarmKlaxon getInstance() {
-        if (sInstance == null) sInstance = new AlarmKlaxon();
+    static synchronized AlarmKlaxon getInstance(Context context) {
+        if (sInstance == null) sInstance = new AlarmKlaxon(context);
         return sInstance;
     }
 
-    private AlarmKlaxon() {
-        mVibrator = new Vibrator();
+    private AlarmKlaxon(Context context) {
+        mVibrator = (Vibrator)context.getSystemService(Context.VIBRATOR_SERVICE);
     }
 
     public void reportAlarm(

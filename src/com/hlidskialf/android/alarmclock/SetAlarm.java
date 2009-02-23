@@ -31,7 +31,7 @@ import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.CheckBoxPreference;
 import android.preference.PreferenceScreen;
-import android.text.format.DateFormat;
+import com.hlidskialf.android.text.format.DateFormat;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TimePicker;

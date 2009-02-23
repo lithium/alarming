@@ -26,7 +26,7 @@ import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.provider.Settings;
-import android.text.format.DateFormat;
+import com.hlidskialf.android.text.format.DateFormat;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -42,6 +42,8 @@ public class DigitalClock extends LinearLayout {
     private final static String M12 = "h:mm";
     private final static String M24 = "k:mm";
 
+
+    private Context mContext;
     private Calendar mCalendar;
     private String mFormat;
     private TextView mTimeDisplay;
@@ -103,10 +105,12 @@ public class DigitalClock extends LinearLayout {
 
     public DigitalClock(Context context) {
         this(context, null);
+        mContext = context;
     }
 
     public DigitalClock(Context context, AttributeSet attrs) {
         super(context, attrs);
+        mContext = context;
     }
 
     @Override

@@ -59,7 +59,7 @@ public class AlarmAlert extends Activity {
 
         setContentView(R.layout.alarm_alert);
 
-        mKlaxon = AlarmKlaxon.getInstance();
+        mKlaxon = AlarmKlaxon.getInstance(this);
 
         // Popup alert over black screen
         WindowManager.LayoutParams lp = getWindow().getAttributes();

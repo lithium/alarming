@@ -51,14 +51,14 @@ public class AlarmReceiver extends BroadcastReceiver {
         AlarmAlertWakeLock.acquire(context);
 
         /* start audio/vibe */
-        AlarmKlaxon klaxon = AlarmKlaxon.getInstance();
+        AlarmKlaxon klaxon = AlarmKlaxon.getInstance(context);
         klaxon.play(context, id);
 
         /* launch UI, explicitly stating that this is not due to user action
          * so that the current app's notification management is not disturbed */
         Intent fireAlarm = new Intent(context, AlarmAlert.class);
         fireAlarm.putExtra(Alarms.ID, id);
-        fireAlarm.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_USER_ACTION);
+        fireAlarm.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(fireAlarm);
    }
 }

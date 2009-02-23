@@ -30,7 +30,8 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.provider.BaseColumns;
 import android.provider.Settings;
-import android.text.format.DateFormat;
+
+import com.hlidskialf.android.text.format.DateFormat;
 
 import java.util.Calendar;
 
@@ -279,8 +280,9 @@ public class Alarms {
     static interface AlarmSettings {
         void reportAlarm(
                 int idx, boolean enabled, int hour, int minutes,
-                DaysOfWeek daysOfWeek, boolean vibrate, String message,
-                String alert);
+                DaysOfWeek daysOfWeek, boolean vibrate, 
+                int volume, int crescendo, int delay, 
+                String message, String alert);
     }
 
     /**
@@ -679,8 +681,11 @@ public class Alarms {
     /**
      * Tells the StatusBar whether the alarm is enabled or disabled
      */
+
+    private static final String ACTION_ALARM_CHANGED = "android.intent.action.ALARM_CHANGED";
+
     private static void setStatusBarIcon(Context context, boolean enabled) {
-        Intent alarmChanged = new Intent(Intent.ACTION_ALARM_CHANGED);
+        Intent alarmChanged = new Intent(ACTION_ALARM_CHANGED);
         alarmChanged.putExtra("alarmSet", enabled);
         context.sendBroadcast(alarmChanged);
     }
@@ -753,6 +758,6 @@ public class Alarms {
      * @return true if clock is set to 24-hour mode
      */
     static boolean get24HourMode(final Context context) {
-        return android.text.format.DateFormat.is24HourFormat(context);
+        return com.hlidskialf.android.text.format.DateFormat.is24HourFormat(context);
     }
 }

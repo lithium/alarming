@@ -1,0 +1,12 @@
+My few modifications to the standard android AlarmClock.
+Changed under the APACHE 2.0 license.
+
+Extra Features:
+  * Night clock mode
+  * Ringtones from mp3
+  * Extra alarm settings:
+      * alarm volume
+      * alarm delay 
+      * alarm duration
+      * gradual volume increase
+      * snooze duration
