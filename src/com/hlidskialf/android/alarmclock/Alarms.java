@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.alarmclock;
+package com.hlidskialf.android.alarmclock;
 
 import android.app.AlarmManager;
 import android.app.Notification;
@@ -39,7 +39,7 @@ import java.util.Calendar;
  */
 public class Alarms {
 
-    public final static String ALARM_ALERT_ACTION = "com.android.alarmclock.ALARM_ALERT";
+    public final static String ALARM_ALERT_ACTION = "com.hlidskialf.android.alarmclock.ALARM_ALERT";
     public final static String ID = "alarm_id";
     public final static String TIME = "alarm_time";
 
@@ -195,7 +195,7 @@ public class Alarms {
          * The content:// style URL for this table
          */
         public static final Uri CONTENT_URI =
-            Uri.parse("content://com.android.alarmclock/alarm");
+            Uri.parse("content://com.hlidskialf.android.alarmclock/alarm");
 
         public static final String _ID = "_id";
 
