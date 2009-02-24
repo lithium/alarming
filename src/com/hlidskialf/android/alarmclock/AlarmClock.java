@@ -49,7 +49,7 @@ import java.util.Calendar;
  */
 public class AlarmClock extends Activity {
 
-    final static String PREFERENCES = "AlarmClock";
+    final static String PREFERENCES = "Alarming";
     final static int SET_ALARM = 1;
     final static String PREF_CLOCK_FACE = "face";
     final static String PREF_SHOW_CLOCK = "show_clock";
@@ -106,6 +106,7 @@ public class AlarmClock extends Activity {
             final Alarms.DaysOfWeek daysOfWeek = new Alarms.DaysOfWeek(
                     cursor.getInt(Alarms.AlarmColumns.ALARM_DAYS_OF_WEEK_INDEX));
             final boolean enabled = cursor.getInt(Alarms.AlarmColumns.ALARM_ENABLED_INDEX) == 1;
+            final String name = cursor.getString(Alarms.AlarmColumns.ALARM_NAME_INDEX);
 
             CheckBox onButton = (CheckBox)view.findViewById(R.id.alarmButton);
             onButton.setChecked(enabled);
@@ -148,6 +149,9 @@ public class AlarmClock extends Activity {
             TextView daysOfWeekView = (TextView) digitalClock.findViewById(R.id.daysOfWeek);
             daysOfWeekView.setText(daysOfWeek.toString(AlarmClock.this, false));
 
+            TextView alarmName = (TextView)digitalClock.findViewById(R.id.alarmName);
+            alarmName.setText(name);
+
             // Build context menu
             digitalClock.setOnCreateContextMenuListener(new View.OnCreateContextMenuListener() {
                     public void onCreateContextMenu(ContextMenu menu, View view,
@@ -162,7 +166,6 @@ public class AlarmClock extends Activity {
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        android.util.Log.v("alarming/order",String.valueOf(item.getOrder()));
         switch(item.getOrder()) {
             case 0: // edit
                 Intent intent = new Intent(AlarmClock.this, SetAlarm.class);

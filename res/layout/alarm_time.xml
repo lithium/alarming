@@ -38,6 +38,8 @@
             android:layout_height="wrap_content"
             android:gravity="left">
 
+
+
             <TextView android:id="@+id/timeDisplay"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -66,6 +68,14 @@
                     android:text="@string/pm"
                     android:textSize="12sp"/>
             </LinearLayout>
+
+            <TextView android:id="@+id/alarmName"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:textColor="@color/white"
+                android:layout_marginLeft="20sp"
+                android:gravity="center|center_vertical"/>
         </LinearLayout>
 
         <TextView android:id="@+id/daysOfWeek"
@@ -75,6 +85,7 @@
             android:textColor="@color/ltgrey"
             android:layout_marginLeft="2dp"
             android:gravity="left"/>
+
 
     </com.hlidskialf.android.alarmclock.DigitalClock>
 

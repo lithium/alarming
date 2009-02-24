@@ -153,6 +153,7 @@ public class SetAlarm extends PreferenceActivity
           public boolean onPreferenceChange(Preference pref, Object newValue) {
             mName = newValue.toString();
             updateName();
+            saveAlarm(false);
             return true;
           }
         });
