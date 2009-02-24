@@ -100,35 +100,40 @@ public class AlarmAlert extends Activity {
         /* snooze behavior: pop a snooze confirmation view, kick alarm
            manager. */
         mSnoozeButton = (Button) findViewById(R.id.snooze);
-        mSnoozeButton.requestFocus();
-        mSnoozeButton.setOnClickListener(new Button.OnClickListener() {
-            public void onClick(View v) {
-                /* If next alarm is set for sooner than the snooze interval,
-                   don't snooze: instead toast user that snooze will not be set */
-                final long snoozeTarget = System.currentTimeMillis() + 1000 * 60 * SNOOZE_MINUTES;
-                long nextAlarm = Alarms.calculateNextAlert(AlarmAlert.this).getAlert();
-                if (nextAlarm < snoozeTarget) {
-                    Calendar c = Calendar.getInstance();
-                    c.setTimeInMillis(nextAlarm);
-                    Toast.makeText(AlarmAlert.this,
-                                   getString(R.string.alarm_alert_snooze_not_set,
-                                             Alarms.formatTime(AlarmAlert.this, c)),
-                                   Toast.LENGTH_LONG).show();
-                } else {
-                    Toast.makeText(AlarmAlert.this,
-                                   getString(R.string.alarm_alert_snooze_set,
-                                             SNOOZE_MINUTES),
-                                   Toast.LENGTH_LONG).show();
+        if (mKlaxon.getSnooze() == 0) {
+          mSnoozeButton.setVisibility(View.GONE);
+        }
+        else {
+          mSnoozeButton.requestFocus();
+          mSnoozeButton.setOnClickListener(new Button.OnClickListener() {
+              public void onClick(View v) {
+                  /* If next alarm is set for sooner than the snooze interval,
+                     don't snooze: instead toast user that snooze will not be set */
+                  final long snoozeTarget = System.currentTimeMillis() + 1000 * 60 * mKlaxon.getSnooze();
+                  long nextAlarm = Alarms.calculateNextAlert(AlarmAlert.this).getAlert();
+                  if (nextAlarm < snoozeTarget) {
+                      Calendar c = Calendar.getInstance();
+                      c.setTimeInMillis(nextAlarm);
+                      Toast.makeText(AlarmAlert.this,
+                                     getString(R.string.alarm_alert_snooze_not_set,
+                                               Alarms.formatTime(AlarmAlert.this, c)),
+                                     Toast.LENGTH_LONG).show();
+                  } else {
+                      Toast.makeText(AlarmAlert.this,
+                                     getString(R.string.alarm_alert_snooze_set,
+                                               mKlaxon.getSnooze()),
+                                     Toast.LENGTH_LONG).show();
 
-                    Alarms.saveSnoozeAlert(AlarmAlert.this, mAlarmId, snoozeTarget);
-                    Alarms.setNextAlert(AlarmAlert.this);
-                    mSnoozed = true;
-                }
-                mKlaxon.stop(AlarmAlert.this, mSnoozed);
-                releaseLocks();
-                finish();
-            }
-        });
+                      Alarms.saveSnoozeAlert(AlarmAlert.this, mAlarmId, snoozeTarget);
+                      Alarms.setNextAlert(AlarmAlert.this);
+                      mSnoozed = true;
+                  }
+                  mKlaxon.stop(AlarmAlert.this, mSnoozed);
+                  releaseLocks();
+                  finish();
+              }
+          });
+        }
 
         /* dismiss button: close notification */
         findViewById(R.id.dismiss).setOnClickListener(new Button.OnClickListener() {

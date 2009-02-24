@@ -292,6 +292,11 @@ public class SetAlarm extends PreferenceActivity
         mCrescendo = crescendo;
         mName = name;
 
+        if (mVibrateOnly) {
+          mVibratePref.setTitle(R.string.alarm_vibrate_only);
+          mVibratePref.setChecked(true);
+        }
+
         if (alert == null || alert.length() == 0) {
             if (Log.LOGV) Log.v("****** reportAlarm null or 0-length alert");
             mAlarmPref.mAlert = getDefaultAlarm();

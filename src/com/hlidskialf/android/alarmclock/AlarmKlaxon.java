@@ -26,6 +26,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Vibrator;
 
+
 /**
  * Manages alarms and vibe.  Singleton, so it can be initiated in
  * AlarmReceiver and shut down in the AlarmAlert activity
@@ -49,6 +50,13 @@ class AlarmKlaxon implements Alarms.AlarmSettings {
     private String mAlert;
     private Alarms.DaysOfWeek mDaysOfWeek;
     private boolean mVibrate;
+    private int mSnooze;
+    private int mDelay;
+    private int mDuration;
+    private boolean mVibrateOnly;
+    private int mVolume;
+    private int mCrescendo;
+    private String mName;
 
     private boolean mPlaying = false;
 
@@ -78,7 +86,16 @@ class AlarmKlaxon implements Alarms.AlarmSettings {
         mAlert = alert;
         mDaysOfWeek = daysOfWeek;
         mVibrate = vibrate;
+        mSnooze = snooze;
+        mDuration = duration;
+        mDelay = delay;
+        mVibrateOnly = vibrate_only;
+        mVolume = volume;
+        mCrescendo = crescendo;
+        mName = name;
     }
+
+    public int getSnooze() { return mSnooze; }
 
     synchronized void play(Context context, int alarmId) {
         ContentResolver contentResolver = context.getContentResolver();
@@ -92,7 +109,7 @@ class AlarmKlaxon implements Alarms.AlarmSettings {
 
         if (Log.LOGV) Log.v("AlarmKlaxon.play() " + mAlarmId + " alert " + mAlert);
 
-        if (mVibrate) {
+        if (mVibrate || mVibrateOnly) {
             mVibrator.vibrate(sVibratePattern, 0);
         } else {
             mVibrator.cancel();
@@ -101,7 +118,7 @@ class AlarmKlaxon implements Alarms.AlarmSettings {
         /* play audio alert */
         if (mAlert == null) {
             Log.e("Unable to play alarm: no audio file available");
-        } else {
+        } else if (!mVibrateOnly) {
 
             /* we need a new MediaPlayer when we change media URLs */
             mMediaPlayer = new MediaPlayer();
@@ -118,10 +135,24 @@ class AlarmKlaxon implements Alarms.AlarmSettings {
                         }
                     });
 
+
                 try {
+                    float vol = mVolume/100;
                     mMediaPlayer.setDataSource(context, Uri.parse(mAlert));
                     mMediaPlayer.setAudioStreamType(AudioManager.STREAM_ALARM);
+                    mMediaPlayer.setVolume(vol,vol);
                     mMediaPlayer.setLooping(true);
+                    /*
+                    mMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                      public void onCompletion(MediaPlayer mp)
+                      {
+                        android.util.Log.v("alarming/klaxon","media complete");
+                        
+                        //mDelay
+                        mMediaPlayer.start();
+                      }
+                    });
+                    */
                     mMediaPlayer.prepare();
                 } catch (Exception ex) {
                     Log.e("Error playing alarm: " + mAlert, ex);
@@ -195,13 +226,14 @@ class AlarmKlaxon implements Alarms.AlarmSettings {
      * popped, so the user will know that the alarm tripped.
      */
     private void enableKiller() {
+        if (mDuration == 0) return;
         mTimeout = new Handler();
         mTimeout.postDelayed(new Runnable() {
                 public void run() {
                     if (Log.LOGV) Log.v("*********** Alarm killer triggered *************");
                     if (mKillerCallback != null) mKillerCallback.onKilled();
                 }
-            }, 1000 * ALARM_TIMEOUT_SECONDS);
+            }, 1000 * mDuration * 60);
     }
 
     private void disableKiller() {

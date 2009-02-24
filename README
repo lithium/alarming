@@ -5,9 +5,9 @@ Changed under the APACHE 2.0 license.
 * Extra alarm settings:
     * vibrate only            (no ringtone, only vibrate)
     * alarm volume            (max vol % to play alarm at [1-100])
-    * alarm volume increase   (seconds to increase from 10% [1-60])
+??    * alarm volume increase   (seconds to increase from 10% [1-60])
     * alarm duration          (minutes to auto-turn off [1-60]) 
-    * tone delay              (ms pause between ringtone plays [100-10000])
+??    * tone delay              (ms pause between ringtone plays [100-10000])
     * snooze duration         (number of minutes to snooze [1-60])
 
 Planned Features:
