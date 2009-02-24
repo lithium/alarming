@@ -254,9 +254,20 @@ public class Alarms {
          */
         public static final String ALERT = "alert";
 
+        public static final String SNOOZE = "snooze";
+        public static final String DURATION = "duration";
+        public static final String DELAY = "delay";
+        public static final String VIBRATE_ONLY = "vibrate_only";
+        public static final String VOLUME = "volume";
+        public static final String CRESCENDO = "crescendo";
+        public static final String NAME = "name";
+
         static final String[] ALARM_QUERY_COLUMNS = {
             _ID, HOUR, MINUTES, DAYS_OF_WEEK, ALARM_TIME,
-            ENABLED, VIBRATE, MESSAGE, ALERT};
+            ENABLED, VIBRATE, MESSAGE, ALERT,
+            SNOOZE, DURATION, DELAY, VIBRATE_ONLY, VOLUME, CRESCENDO, NAME
+            };
+
 
         /**
          * These save calls to cursor.getColumnIndexOrThrow()
@@ -271,6 +282,13 @@ public class Alarms {
         public static final int ALARM_VIBRATE_INDEX = 6;
         public static final int ALARM_MESSAGE_INDEX = 7;
         public static final int ALARM_ALERT_INDEX = 8;
+        public static final int ALARM_SNOOZE_INDEX = 9;
+        public static final int ALARM_DURATION_INDEX = 10;
+        public static final int ALARM_DELAY_INDEX = 11;
+        public static final int ALARM_VIBRATE_ONLY_INDEX = 12;
+        public static final int ALARM_VOLUME_INDEX = 13;
+        public static final int ALARM_CRESCENDO_INDEX = 14;
+        public static final int ALARM_NAME_INDEX = 15;
     }
 
     /**
@@ -281,6 +299,7 @@ public class Alarms {
         void reportAlarm(
                 int idx, boolean enabled, int hour, int minutes,
                 DaysOfWeek daysOfWeek, boolean vibrate, 
+                int snooze, int duration, int delay, boolean vibrate_only , int volume, int crescendo, String name,
                 String message, String alert);
     }
 
@@ -350,9 +369,17 @@ public class Alarms {
                 boolean vibrate = cur.getInt(AlarmColumns.ALARM_VIBRATE_INDEX) == 1 ? true : false;
                 String message = cur.getString(AlarmColumns.ALARM_MESSAGE_INDEX);
                 String alert = cur.getString(AlarmColumns.ALARM_ALERT_INDEX);
+                int snooze = cur.getInt(AlarmColumns.ALARM_SNOOZE_INDEX);
+                int duration = cur.getInt(AlarmColumns.ALARM_DURATION_INDEX);
+                int delay = cur.getInt(AlarmColumns.ALARM_DELAY_INDEX);
+                boolean vibrateOnly = cur.getInt(AlarmColumns.ALARM_VIBRATE_ONLY_INDEX) == 1 ? true : false;
+                int volume = cur.getInt(AlarmColumns.ALARM_VOLUME_INDEX);
+                int crescendo = cur.getInt(AlarmColumns.ALARM_CRESCENDO_INDEX);
+                String name = cur.getString(AlarmColumns.ALARM_NAME_INDEX);
                 alarmSettings.reportAlarm(
-                        id, enabled, hour, minutes, new DaysOfWeek(daysOfWeek),
-                        vibrate, message, alert);
+                        id, enabled, hour, minutes, new DaysOfWeek(daysOfWeek), vibrate, 
+                        snooze, duration, delay, vibrateOnly, volume, crescendo, name,
+                        message, alert);
             } while (cur.moveToNext());
         }
     }
@@ -390,8 +417,9 @@ public class Alarms {
      */
     public synchronized static void setAlarm(
             Context context, int id, boolean enabled, int hour, int minutes,
-            DaysOfWeek daysOfWeek, boolean vibrate, String message,
-            String alert) {
+            DaysOfWeek daysOfWeek, boolean vibrate,
+            int snooze, int duration, int delay, boolean vibrate_only , int volume, int crescendo, String name,
+            String message, String alert) {
 
         ContentValues values = new ContentValues(8);
         ContentResolver resolver = context.getContentResolver();
@@ -409,6 +437,13 @@ public class Alarms {
         values.put(AlarmColumns.VIBRATE, vibrate);
         values.put(AlarmColumns.MESSAGE, message);
         values.put(AlarmColumns.ALERT, alert);
+        values.put(AlarmColumns.SNOOZE, snooze);
+        values.put(AlarmColumns.DURATION, duration);
+        values.put(AlarmColumns.DELAY, delay);
+        values.put(AlarmColumns.VIBRATE_ONLY, vibrate_only);
+        values.put(AlarmColumns.VOLUME, volume);
+        values.put(AlarmColumns.CRESCENDO, crescendo);
+        values.put(AlarmColumns.NAME, name);
         resolver.update(ContentUris.withAppendedId(AlarmColumns.CONTENT_URI, id),
                         values, null, null);
 
@@ -443,8 +478,9 @@ public class Alarms {
 
             public void reportAlarm(
                     int idx, boolean enabled, int hour, int minutes,
-                    DaysOfWeek daysOfWeek, boolean vibrate, String message,
-                    String alert) {
+                    DaysOfWeek daysOfWeek, boolean vibrate, 
+                    int snooze, int duration, int delay, boolean vibrate_only , int volume, int crescendo, String name,
+                    String message, String alert) {
                 mHour = hour;
                 mMinutes = minutes;
                 mDaysOfWeek = daysOfWeek;
@@ -496,8 +532,9 @@ public class Alarms {
 
         public void reportAlarm(
                 int idx, boolean enabled, int hour, int minutes,
-                DaysOfWeek daysOfWeek, boolean vibrate, String message,
-                String alert) {
+                DaysOfWeek daysOfWeek, boolean vibrate, 
+                int snooze, int duration, int delay, boolean vibrate_only , int volume, int crescendo, String name,
+                String message, String alert) {
             if (enabled) {
                 long atTime = calculateAlarm(hour, minutes,
                                              daysOfWeek).getTimeInMillis();

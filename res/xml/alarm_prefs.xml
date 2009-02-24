@@ -41,7 +41,7 @@
     <com.hlidskialf.android.alarmclock.AlarmPreference
         android:key="alarm" 
         android:title="@string/alert"
-        android:ringtoneType="all"
+        android:ringtoneType="alarm"
         android:showDefault="false"
         android:showSilent="false" />
     <com.hlidskialf.android.alarmclock.SliderPreference android:key="volume"

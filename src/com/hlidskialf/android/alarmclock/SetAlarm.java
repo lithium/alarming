@@ -159,35 +159,35 @@ public class SetAlarm extends PreferenceActivity
 
         mVolumePref.setOnSliderChangedListener(new SliderPreference.OnSliderChangedListener() {
             public int getValue() { return mVolume; }
-            public void onSliderChanged(int value) { mVolume = value; updateVolume(); }
+            public void onSliderChanged(int value) { mVolume = value; updateVolume(); saveAlarm(false); }
             public int progressToValue(int progress) { return progress < 10 ? 10 : progress; }
             public int valueToProgress(int value) { return value < 10 ? 10 : value; }
         });
 
         mCrescendoPref.setOnSliderChangedListener(new SliderPreference.OnSliderChangedListener() {
             public int getValue() { return mCrescendo; }
-            public void onSliderChanged(int value) { mCrescendo = value; updateCrescendo(); }
+            public void onSliderChanged(int value) { mCrescendo = value; updateCrescendo(); saveAlarm(false); }
             public int progressToValue(int progress) { return (int)(60.0*(progress / 100.0)); }
             public int valueToProgress(int value) { return (int)(100.0*(value/60.0)); }
         });
         
         mSnoozePref.setOnSliderChangedListener(new SliderPreference.OnSliderChangedListener() {
             public int getValue() { return mSnooze; }
-            public void onSliderChanged(int value) { mSnooze = value; updateSnooze(); }
+            public void onSliderChanged(int value) { mSnooze = value; updateSnooze(); saveAlarm(false); }
             public int progressToValue(int progress) { return (int)(60.0*(progress / 100.0)); }
             public int valueToProgress(int value) { return (int)(100.0*(value/60.0)); }
         });
 
         mDurationPref.setOnSliderChangedListener(new SliderPreference.OnSliderChangedListener() {
             public int getValue() { return mDuration; }
-            public void onSliderChanged(int value) { mDuration = value; updateDuration(); }
+            public void onSliderChanged(int value) { mDuration = value; updateDuration(); saveAlarm(false); }
             public int progressToValue(int progress) { return (int)(60.0*(progress / 100.0)); }
             public int valueToProgress(int value) { return (int)(100.0*(value/60.0)); }
         });
 
         mDelayPref.setOnSliderChangedListener(new SliderPreference.OnSliderChangedListener() {
             public int getValue() { return mDelay; }
-            public void onSliderChanged(int value) { mDelay = value; updateDelay(); }
+            public void onSliderChanged(int value) { mDelay = value; updateDelay(); saveAlarm(false); }
             public int progressToValue(int progress) { return (int)(10000.0*(progress / 100.0)); }
             public int valueToProgress(int value) { return (int)(100.0*(value/10000.0)); }
         });
@@ -242,6 +242,7 @@ public class SetAlarm extends PreferenceActivity
         } else if (preference == mNamePref) {
             if (mName == null || mName.length() < 1) mNamePref.setText(getString(R.string.alarm_noname));
             mNamePref.setText(mName);
+            saveAlarm(false);
         } else if (preference == mVibratePref) {
             if (!mVibratePref.isChecked()) {
               if (!mVibrateOnly) {
@@ -273,14 +274,22 @@ public class SetAlarm extends PreferenceActivity
      */
     public void reportAlarm(
             int idx, boolean enabled, int hour, int minutes,
-            Alarms.DaysOfWeek daysOfWeek, boolean vibrate,String message,
-            String alert) {
+            Alarms.DaysOfWeek daysOfWeek, boolean vibrate,
+            int snooze, int duration, int delay, boolean vibrate_only , int volume, int crescendo, String name,
+            String message, String alert) {
 
         mHour = hour;
         mMinutes = minutes;
         mAlarmOnPref.setChecked(enabled);
         mDaysOfWeek.set(daysOfWeek);
         mVibratePref.setChecked(vibrate);
+        mSnooze = snooze;
+        mDuration = duration;
+        mDelay = delay;
+        mVibrateOnly = vibrate_only;
+        mVolume = volume;
+        mCrescendo = crescendo;
+        mName = name;
 
         if (alert == null || alert.length() == 0) {
             if (Log.LOGV) Log.v("****** reportAlarm null or 0-length alert");
@@ -367,6 +376,7 @@ public class SetAlarm extends PreferenceActivity
             String alertString = mAlarmPref.mAlert.toString();
             saveAlarm(this, mId, mAlarmOnPref.isChecked(), mHour, mMinutes,
                       mDaysOfWeek, mVibratePref.isChecked(), alertString,
+                      mSnooze, mDuration, mDelay, mVibrateOnly, mVolume, mCrescendo, mName,
                       popToast);
         }
     }
@@ -378,12 +388,14 @@ public class SetAlarm extends PreferenceActivity
     private static void saveAlarm(
             Context context, int id, boolean enabled, int hour, int minute,
             Alarms.DaysOfWeek daysOfWeek, boolean vibrate, String alert,
+            int snooze, int duration, int delay, boolean vibrate_only , int volume, int crescendo, String name,
             boolean popToast) {
         if (Log.LOGV) Log.v("** saveAlarm " + id + " " + enabled + " " + hour +
                             " " + minute + " vibe " + vibrate);
 
         // Fix alert string first
         Alarms.setAlarm(context, id, enabled, hour, minute, daysOfWeek, vibrate,
+                        snooze, duration, delay, vibrate_only, volume, crescendo, name,
                         "", alert);
 
         if (enabled && popToast) {
@@ -503,8 +515,10 @@ public class SetAlarm extends PreferenceActivity
         int minutes = (nowMinute + 1) % 60;
         int hour = nowHour + (nowMinute == 0? 1 : 0);
 
-        saveAlarm(this, mId, true, hour, minutes, mDaysOfWeek, true,
-                  mAlarmPref.mAlert.toString(), true);
+        saveAlarm(this, mId, true, hour, minutes, 
+                  mDaysOfWeek, true, mAlarmPref.mAlert.toString(),
+                  mSnooze, mDuration, mDelay, mVibrateOnly, mVolume, mCrescendo, mName,
+                  true);
     }
 
 }
