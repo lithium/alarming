@@ -4,7 +4,10 @@ Changed under the APACHE 2.0 license.
 Extra Features:
   * Night clock mode
   * Ringtones from mp3
+  * Disable during calls
+  * Name alarms
   * Extra alarm settings:
+      * vibrate only
       * alarm volume envelope   (start_volume increases to max_volume over envelope_duration)
       * alarm delay             (ms pause between ringtone plays)
       * alarm duration          (number of seconds to ring alarm for)

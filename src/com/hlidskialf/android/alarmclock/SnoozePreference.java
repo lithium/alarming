@@ -25,7 +25,9 @@ public class SnoozePreference extends DialogPreference implements SeekBar.OnSeek
     mOnSnoozeChangedObserver = onSnoozeChangedObserver;
   }
 
-  public SnoozePreference(Context context, AttributeSet attrs) { super(context,attrs); }
+  public SnoozePreference(Context context, AttributeSet attrs) { 
+    super(context,attrs); 
+  }
 
   @Override
   protected void onBindDialogView(View view) {
