@@ -6,14 +6,18 @@
     android:paddingLeft="3sp"
     android:paddingRight="3sp"
     > 
-    <TextView android:id="@+id/snooze_text"
+    <TextView android:id="@+id/slider_message"
       android:layout_width="fill_parent"
       android:layout_height="wrap_content"
       android:gravity="center"
-      android:text="No snooze"
     />
-    <SeekBar android:id="@+id/snooze_seek"
+    <SeekBar android:id="@+id/slider_seekbar"
       android:layout_width="fill_parent"
       android:layout_height="wrap_content"
+    />
+    <TextView android:id="@+id/slider_text"
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content"
+      android:gravity="center"
     />
 </LinearLayout>

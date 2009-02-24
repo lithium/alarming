@@ -37,8 +37,12 @@
     <!-- Preference category on Alarm Settings screen: Set alarm -->
     <string name="set_alarm">Set alarm</string>
 
+    <string name="alarm_name">Name</string>
+    <string name="alarm_noname">No name</string>
+
     <!-- Setting labels on Set alarm screen: Volume -->
     <string name="alarm_volume">Volume</string>
+    <string name="alarm_crescendo">Volume crescendo</string>
 
     <!-- Setting labels on Set alarm screen: Delay -->
     <string name="alarm_delay">Delay</string>
@@ -54,6 +58,8 @@
 
     <!-- Setting labels on Set alarm screen: Vibration on or off -->
     <string name="alarm_vibrate">Vibrate</string>
+    <string name="alarm_vibrate_only">Vibrate only</string>
+    <string name="alarm_vibrate_summary">Double-click for Vibrate Only</string>
 
     <!-- Setting labels on Set alarm screen: Repeat -->
     <string name="alarm_repeat">Repeat</string>
@@ -154,14 +160,37 @@
          failure -->
     <string name="error">Alarm not set</string>
 
+    <string name="empty_string"></string>
+
     <!-- Error dialog message.  Appears only on critical
          failure -->
     <string name="dberror">Sorry, the alarm could not be set.</string>
 
     <!-- Snooze Dialog Preference -->
-    <string name="snooze_title">Change snooze duration</string>
-    <string name="snooze_message">Select how long snooze button will pause alarm</string>
+    <string name="snooze_title">Snooze duration</string>
+    <string name="snooze_message">How long snooze button will pause</string>
     <string name="snooze_disabled">Snooze disabled</string>
+    <string name="snooze_unit">minutes</string>
+
+    <string name="duration_title">Alarm duration</string>
+    <string name="duration_message">How many minutes the alarm will sound</string>
+    <string name="duration_unit">minutes</string>
+    <string name="duration_infinite">Forever</string>
+
+    <string name="delay_title">Alarm delay</string>
+    <string name="delay_message">Pause between each tone alert</string>
+    <string name="delay_unit">ms</string>
+    <string name="delay_zero">No delay</string>
+
+    <string name="volume_title">Alarm volume</string>
+    <string name="volume_message">Volume of alarm</string>
+    <string name="volume_unit">%</string>
+    <string name="volume_zero">10%</string>
+    
+    <string name="crescendo_title">Crescendo</string>
+    <string name="crescendo_message">How long volume takes to increase</string>
+    <string name="crescendo_unit">seconds</string>
+    <string name="crescendo_zero">Immediately</string>
 
     <!-- Days of week -->
     <string-array name="days_of_week">

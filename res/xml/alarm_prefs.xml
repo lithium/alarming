@@ -18,6 +18,8 @@
     <PreferenceCategory android:title="@string/set_alarm"/>
     <CheckBoxPreference android:key="on" 
         android:title="@string/enable"/>
+    <EditTextPreference android:key="name" 
+        android:title="@string/alarm_name"/>
     <Preference android:key="time" 
         android:title="@string/time"/>
     <com.hlidskialf.android.alarmclock.RepeatPreference
@@ -25,23 +27,53 @@
         android:title="@string/alarm_repeat"
         android:entries="@array/days_of_week"
         android:entryValues="@array/days_of_week"/>
+    <com.hlidskialf.android.alarmclock.SliderPreference android:key="snooze"
+        android:title="@string/alarm_snooze"
+        android:dialogTitle="@string/snooze_title"
+        android:dialogLayout="@layout/slider_dialog"
+        dialogMessage = "@string/snooze_message"
+        zeroText = "@string/snooze_disabled"
+        unitsText = "@string/snooze_unit"
+        />
+    <CheckBoxPreference android:key="vibrate" 
+        android:summary="@string/alarm_vibrate_summary"
+        android:title="@string/alarm_vibrate"/>
     <com.hlidskialf.android.alarmclock.AlarmPreference
         android:key="alarm" 
         android:title="@string/alert"
         android:ringtoneType="all"
         android:showDefault="false"
         android:showSilent="false" />
-    <Preference android:key="volume"
-        android:title="@string/alarm_volume"/>
-    <CheckBoxPreference android:key="vibrate" 
-        android:title="@string/alarm_vibrate"/>
-    <Preference android:key="delay"
-        android:title="@string/alarm_delay"/>
-    <Preference android:key="duration"
-        android:title="@string/alarm_duration"/>
-    <com.hlidskialf.android.alarmclock.SnoozePreference android:key="snooze"
-        android:dialogTitle="@string/snooze_title"
-        android:dialogMessage="@string/snooze_message"
-        android:dialogLayout="@layout/snooze_dialog"
-        android:title="@string/alarm_snooze"/>
+    <com.hlidskialf.android.alarmclock.SliderPreference android:key="volume"
+        android:title="@string/alarm_volume"
+        android:dialogTitle="@string/volume_title"
+        android:dialogLayout="@layout/slider_dialog"
+        dialogMessage="@string/volume_message"
+        zeroText = "@string/volume_zero"
+        unitsText = "@string/volume_unit"
+        />
+    <com.hlidskialf.android.alarmclock.SliderPreference android:key="crescendo"
+        android:title="@string/alarm_crescendo"
+        android:dialogTitle="@string/crescendo_title"
+        android:dialogLayout="@layout/slider_dialog"
+        dialogMessage="@string/crescendo_message"
+        zeroText = "@string/crescendo_zero"
+        unitsText = "@string/crescendo_unit"
+        />
+    <com.hlidskialf.android.alarmclock.SliderPreference android:key="delay"
+        android:title="@string/alarm_delay"
+        android:dialogTitle="@string/delay_title"
+        android:dialogLayout="@layout/slider_dialog"
+        dialogMessage="@string/delay_message"
+        zeroText = "@string/delay_zero"
+        unitsText = "@string/delay_unit"
+        />
+    <com.hlidskialf.android.alarmclock.SliderPreference android:key="duration"
+        android:title="@string/alarm_duration"
+        android:dialogTitle="@string/duration_title"
+        android:dialogLayout="@layout/slider_dialog"
+        dialogMessage="@string/duration_message"
+        zeroText = "@string/duration_infinite"
+        unitsText = "@string/duration_unit"
+        />
 </PreferenceScreen>
