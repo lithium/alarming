@@ -42,6 +42,8 @@ import android.widget.CheckBox;
 
 import java.util.Calendar;
 
+
+
 /**
  * AlarmClock application.
  */
@@ -151,7 +153,8 @@ public class AlarmClock extends Activity {
                     public void onCreateContextMenu(ContextMenu menu, View view,
                                                     ContextMenuInfo menuInfo) {
                         menu.setHeaderTitle(Alarms.formatTime(AlarmClock.this, c));
-                        MenuItem deleteAlarmItem = menu.add(0, id, 0, R.string.delete_alarm);
+                        MenuItem editAlarmItem = menu.add(0, id, 0, R.string.edit_alarm);
+                        MenuItem deleteAlarmItem = menu.add(0, id, 1, R.string.delete_alarm);
                     }
                 });
         }
@@ -159,7 +162,18 @@ public class AlarmClock extends Activity {
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        Alarms.deleteAlarm(this, item.getItemId());
+        android.util.Log.v("alarming/order",String.valueOf(item.getOrder()));
+        switch(item.getOrder()) {
+            case 0: // edit
+                Intent intent = new Intent(AlarmClock.this, SetAlarm.class);
+                intent.putExtra(Alarms.ID, item.getItemId());
+                startActivityForResult(intent, SET_ALARM);
+                break;
+            case 1: // delete
+                Alarms.deleteAlarm(this, item.getItemId());
+                break;
+        }
+
         return true;
     }
 

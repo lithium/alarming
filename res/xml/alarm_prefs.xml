@@ -20,17 +20,28 @@
         android:title="@string/enable"/>
     <Preference android:key="time" 
         android:title="@string/time"/>
-    <com.hlidskialf.android.alarmclock.AlarmPreference
-        android:key="alarm" 
-        android:title="@string/alert"
-        android:ringtoneType="alarm"
-        android:showDefault="false"
-        android:showSilent="false" />
-    <CheckBoxPreference android:key="vibrate" 
-        android:title="@string/alarm_vibrate"/>
     <com.hlidskialf.android.alarmclock.RepeatPreference
         android:key="setRepeat" 
         android:title="@string/alarm_repeat"
         android:entries="@array/days_of_week"
         android:entryValues="@array/days_of_week"/>
+    <com.hlidskialf.android.alarmclock.AlarmPreference
+        android:key="alarm" 
+        android:title="@string/alert"
+        android:ringtoneType="all"
+        android:showDefault="false"
+        android:showSilent="false" />
+    <Preference android:key="volume"
+        android:title="@string/alarm_volume"/>
+    <CheckBoxPreference android:key="vibrate" 
+        android:title="@string/alarm_vibrate"/>
+    <Preference android:key="delay"
+        android:title="@string/alarm_delay"/>
+    <Preference android:key="duration"
+        android:title="@string/alarm_duration"/>
+    <com.hlidskialf.android.alarmclock.SnoozePreference android:key="snooze"
+        android:dialogTitle="@string/snooze_title"
+        android:dialogMessage="@string/snooze_message"
+        android:dialogLayout="@layout/snooze_dialog"
+        android:title="@string/alarm_snooze"/>
 </PreferenceScreen>

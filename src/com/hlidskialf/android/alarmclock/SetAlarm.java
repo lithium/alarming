@@ -48,6 +48,7 @@ public class SetAlarm extends PreferenceActivity
     private AlarmPreference mAlarmPref;
     private CheckBoxPreference mVibratePref;
     private RepeatPreference mRepeatPref;
+    private SnoozePreference mSnoozePref;
     private ContentObserver mAlarmsChangeObserver;
     private MenuItem mDeleteAlarmItem;
     private MenuItem mTestAlarmItem;
@@ -56,6 +57,8 @@ public class SetAlarm extends PreferenceActivity
     private int mHour;
     private int mMinutes;
     private Alarms.DaysOfWeek mDaysOfWeek = new Alarms.DaysOfWeek();
+
+    private int mSnooze;
 
     private boolean mReportAlarmCalled;
 
@@ -89,6 +92,18 @@ public class SetAlarm extends PreferenceActivity
         }
     }
 
+    private class OnSnoozeChangedObserver implements SnoozePreference.OnSnoozeChangedObserver {
+      public int getSnooze() { 
+        return mSnooze;
+      }
+      public void onSnoozeChanged(int snooze) {
+        mSnooze = snooze;
+        saveAlarm(true);
+        updateSnooze();
+      }
+
+    }
+
     /**
      * Set an alarm.  Requires an Alarms.ID to be passed in as an
      * extra
@@ -103,6 +118,8 @@ public class SetAlarm extends PreferenceActivity
         mAlarmPref = (AlarmPreference) findPreference("alarm");
         mVibratePref = (CheckBoxPreference) findPreference("vibrate");
         mRepeatPref = (RepeatPreference) findPreference("setRepeat");
+        
+        mSnoozePref = (SnoozePreference) findPreference("snooze");
 
         Intent i = getIntent();
         mId = i.getIntExtra(Alarms.ID, -1);
@@ -125,6 +142,8 @@ public class SetAlarm extends PreferenceActivity
 
         mAlarmPref.setRingtoneChangedListener(new RingtoneChangedListener());
         mRepeatPref.setOnRepeatChangedObserver(new OnRepeatChangedObserver());
+
+        mSnoozePref.setOnSnoozeChangedObserver(new OnSnoozeChangedObserver());
     }
 
     @Override
@@ -220,6 +239,8 @@ public class SetAlarm extends PreferenceActivity
         updateRepeat();
         updateAlarm(mAlarmPref.mAlert);
 
+        updateSnooze();
+
         mReportAlarmCalled = true;
     }
 
@@ -248,6 +269,13 @@ public class SetAlarm extends PreferenceActivity
     private void updateRepeat() {
         if (Log.LOGV) Log.v("updateRepeat " + mId);
         mRepeatPref.setSummary(mDaysOfWeek.toString(this, true));
+    }
+
+    private void updateSnooze() { 
+        if (mSnooze == 0)
+          mSnoozePref.setSummary(R.string.snooze_disabled);
+        else
+          mSnoozePref.setSummary(String.valueOf(mSnooze)+" minutes");
     }
 
     private void saveAlarm(boolean popToast) {

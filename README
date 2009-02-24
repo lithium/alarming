@@ -5,8 +5,8 @@ Extra Features:
   * Night clock mode
   * Ringtones from mp3
   * Extra alarm settings:
-      * alarm volume
-      * alarm delay 
-      * alarm duration
-      * gradual volume increase
-      * snooze duration
+      * alarm volume envelope   (start_volume increases to max_volume over envelope_duration)
+      * alarm delay             (ms pause between ringtone plays)
+      * alarm duration          (number of seconds to ring alarm for)
+      * snooze duration         (number of minutes to snooze when pressed)
+  * ?Accelerometer snooze?

@@ -281,7 +281,6 @@ public class Alarms {
         void reportAlarm(
                 int idx, boolean enabled, int hour, int minutes,
                 DaysOfWeek daysOfWeek, boolean vibrate, 
-                int volume, int crescendo, int delay, 
                 String message, String alert);
     }
 

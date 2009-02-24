@@ -22,6 +22,9 @@
     <!-- Menu item on Alarm Clock screen: Add alarm -->
     <string name="add_alarm">Add alarm</string>
 
+    <!-- Context Menu Item on Alarm Settings screen: Edit alarm -->
+    <string name="edit_alarm">Edit alarm</string>
+
     <!-- Context Menu Item on Alarm Settings screen: Delete alarm -->
     <string name="delete_alarm">Delete alarm</string>
 
@@ -33,6 +36,18 @@
 
     <!-- Preference category on Alarm Settings screen: Set alarm -->
     <string name="set_alarm">Set alarm</string>
+
+    <!-- Setting labels on Set alarm screen: Volume -->
+    <string name="alarm_volume">Volume</string>
+
+    <!-- Setting labels on Set alarm screen: Delay -->
+    <string name="alarm_delay">Delay</string>
+
+    <!-- Setting labels on Set alarm screen: Duration -->
+    <string name="alarm_duration">Duration</string>
+
+    <!-- Setting labels on Set alarm screen: Snooze time -->
+    <string name="alarm_snooze">Snooze</string>
 
     <!-- Setting labels on Set alarm screen: Enable alarm -->
     <string name="enable">Turn on alarm</string>
@@ -142,6 +157,11 @@
     <!-- Error dialog message.  Appears only on critical
          failure -->
     <string name="dberror">Sorry, the alarm could not be set.</string>
+
+    <!-- Snooze Dialog Preference -->
+    <string name="snooze_title">Change snooze duration</string>
+    <string name="snooze_message">Select how long snooze button will pause alarm</string>
+    <string name="snooze_disabled">Snooze disabled</string>
 
     <!-- Days of week -->
     <string-array name="days_of_week">

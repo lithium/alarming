@@ -8,7 +8,7 @@
     <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
 
     <application android:label="@string/app_label"
-                 android:icon="@drawable/ic_launcher_alarmclock">
+                 android:icon="@drawable/alarming">
 
         <provider android:name="AlarmProvider" android:authorities="com.hlidskialf.android.alarmclock" />
 
