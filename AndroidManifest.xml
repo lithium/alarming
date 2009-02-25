@@ -1,5 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-        package="com.hlidskialf.android.alarmclock">
+        package="com.hlidskialf.android.alarmclock"
+        android:versionCode="102"
+        android:versionName="@string/app_version">
 
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
@@ -8,7 +10,8 @@
     <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
 
     <application android:label="@string/app_label"
-                 android:icon="@drawable/alarming">
+                 android:icon="@drawable/alarming"
+		>
 
         <provider android:name="AlarmProvider" android:authorities="com.hlidskialf.android.alarmclock" />
 
