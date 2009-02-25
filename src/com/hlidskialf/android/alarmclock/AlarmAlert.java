@@ -89,6 +89,9 @@ public class AlarmAlert extends Activity {
             ((DigitalClock)clockLayout).setAnimate();
         }
 
+	TextView nameText = (TextView)findViewById(R.id.alert_name);
+	nameText.setText(mKlaxon.getName());
+
         mAlarmId = getIntent().getIntExtra(Alarms.ID, -1);
 
         /* allow next alarm to trigger while this activity is

@@ -161,8 +161,8 @@ public class SetAlarm extends PreferenceActivity
         mVolumePref.setOnSliderChangedListener(new SliderPreference.OnSliderChangedListener() {
             public int getValue() { return mVolume; }
             public void onSliderChanged(int value) { mVolume = value; updateVolume(); saveAlarm(false); }
-            public int progressToValue(int progress) { return progress < 10 ? 10 : progress; }
-            public int valueToProgress(int value) { return value < 10 ? 10 : value; }
+            public int progressToValue(int progress) { return progress; }
+            public int valueToProgress(int value) { return value; }
         });
 
         mCrescendoPref.setOnSliderChangedListener(new SliderPreference.OnSliderChangedListener() {
@@ -189,8 +189,8 @@ public class SetAlarm extends PreferenceActivity
         mDelayPref.setOnSliderChangedListener(new SliderPreference.OnSliderChangedListener() {
             public int getValue() { return mDelay; }
             public void onSliderChanged(int value) { mDelay = value; updateDelay(); saveAlarm(false); }
-            public int progressToValue(int progress) { return (int)(10000.0*(progress / 100.0)); }
-            public int valueToProgress(int value) { return (int)(100.0*(value/10000.0)); }
+            public int progressToValue(int progress) { return (int)(1000.0*(progress / 100.0)); }
+            public int valueToProgress(int value) { return (int)(100.0*(value/1000.0)); }
         });
     }
 

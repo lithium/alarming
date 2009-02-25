@@ -22,6 +22,13 @@
     android:gravity="center_horizontal"
     android:orientation="vertical">
 
+    <TextView android:id="@+id/alert_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+	android:textSize="18sp"
+	android:textColor="@color/white"
+	android:gravity="center"/>
+
     <LinearLayout
         android:id="@+id/clockView"
         android:layout_width="208dip"
@@ -42,12 +49,13 @@
             android:layout_weight="3"
             android:text="@string/alarm_alert_snooze_text" />
 
-        <!-- blank stretchable view -->
+        <!-- blank stretchable view 
         <View
             android:layout_width="2dip"
             android:layout_height="2dip"
             android:layout_gravity="fill_horizontal" 
             android:layout_weight="1"/>
+					-->
         
         <Button
             android:id="@+id/dismiss"

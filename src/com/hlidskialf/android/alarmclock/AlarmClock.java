@@ -67,6 +67,7 @@ public class AlarmClock extends Activity {
     private View mClock = null;
     private MenuItem mAddAlarmItem;
     private MenuItem mToggleClockItem;
+    private MenuItem mAboutItem;
     private ListView mAlarmsList;
     private Cursor mCursor;
 
@@ -267,6 +268,9 @@ public class AlarmClock extends Activity {
         mToggleClockItem = menu.add(0, 0, 0, R.string.hide_clock);
         mToggleClockItem.setIcon(R.drawable.ic_menu_clock_face);
 
+	mAboutItem = menu.add(0, 0, 0, R.string.about);
+	mAboutItem.setIcon(android.R.drawable.ic_menu_info_details);
+
         return true;
     }
 
@@ -299,7 +303,15 @@ public class AlarmClock extends Activity {
             setClockVisibility(!getClockVisibility());
             saveClockVisibility();
             return true;
-        }
+        } else if (item == mAboutItem) {
+                View v = getLayoutInflater().inflate(R.layout.about_dialog,null);
+                AlertDialog dia = new AlertDialog.Builder(this).
+                                    setTitle(R.string.about_title).
+                                    setView(v).
+                                    setPositiveButton(R.string.about_ok,null).
+                                    create();
+                dia.show();
+    	}
 
         return false;
     }

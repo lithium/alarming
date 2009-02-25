@@ -57,6 +57,7 @@ class AlarmKlaxon implements Alarms.AlarmSettings {
     private int mVolume;
     private int mCrescendo;
     private String mName;
+    private float mCurVolume,mMaxVolume;
 
     private boolean mPlaying = false;
 
@@ -96,6 +97,7 @@ class AlarmKlaxon implements Alarms.AlarmSettings {
     }
 
     public int getSnooze() { return mSnooze; }
+    public String getName() { return mName; }
 
     synchronized void play(Context context, int alarmId) {
         ContentResolver contentResolver = context.getContentResolver();
@@ -118,7 +120,7 @@ class AlarmKlaxon implements Alarms.AlarmSettings {
         /* play audio alert */
         if (mAlert == null) {
             Log.e("Unable to play alarm: no audio file available");
-        } else if (!mVibrateOnly) {
+        } else if (!mVibrateOnly && mVolume > 0) {
 
             /* we need a new MediaPlayer when we change media URLs */
             mMediaPlayer = new MediaPlayer();
@@ -137,23 +139,37 @@ class AlarmKlaxon implements Alarms.AlarmSettings {
 
 
                 try {
-                    float vol = mVolume/100;
+                    mMaxVolume = (float)mVolume/(float)100;
+                    mCurVolume = mCrescendo > 0 ? 0 : mMaxVolume; 
                     mMediaPlayer.setDataSource(context, Uri.parse(mAlert));
                     mMediaPlayer.setAudioStreamType(AudioManager.STREAM_ALARM);
-                    mMediaPlayer.setVolume(vol,vol);
-                    mMediaPlayer.setLooping(true);
-                    /*
+                    mMediaPlayer.setVolume(mCurVolume,mCurVolume);
+                    mMediaPlayer.setLooping(false);
+                    mMediaPlayer.prepare();
+
+                    mCrescendo *= 1000;
+                    final float delta = mMaxVolume / ((float)mCrescendo / (float)(mMediaPlayer.getDuration()+mDelay));
+
                     mMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                       public void onCompletion(MediaPlayer mp)
                       {
-                        android.util.Log.v("alarming/klaxon","media complete");
-                        
-                        //mDelay
-                        mMediaPlayer.start();
+                        if (mCurVolume < mMaxVolume) {
+                            mCurVolume += delta;
+                            mp.setVolume(mCurVolume,mCurVolume);
+                        }
+
+                        if (mDelay > 0) {
+                            Handler h = new Handler();
+                            h.postDelayed(new Runnable() {
+                                    public void run() { mMediaPlayer.start(); }
+                                }, mDelay);
+                        }
+                        else {
+                            mMediaPlayer.start();
+                        }
                       }
                     });
-                    */
-                    mMediaPlayer.prepare();
+
                 } catch (Exception ex) {
                     Log.e("Error playing alarm: " + mAlert, ex);
                     return;
