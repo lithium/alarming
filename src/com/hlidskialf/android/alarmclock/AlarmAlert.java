@@ -90,7 +90,10 @@ public class AlarmAlert extends Activity {
         }
 
 	TextView nameText = (TextView)findViewById(R.id.alert_name);
-	nameText.setText(mKlaxon.getName());
+        String n = mKlaxon.getName();
+        if (nameText != null && n != null) {
+            nameText.setText(mKlaxon.getName());
+        }
 
         mAlarmId = getIntent().getIntExtra(Alarms.ID, -1);
 
