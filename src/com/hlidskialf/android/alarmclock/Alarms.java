@@ -53,6 +53,9 @@ public class Alarms {
     private final static String M12 = "h:mm aa";
     private final static String M24 = "k:mm";
 
+    private final static String SM12 = "h:mm:ss aa";
+    private final static String SM24 = "k:mm:ss";
+
     static class DaysOfWeek {
 
         int mDays;
@@ -769,6 +772,11 @@ public class Alarms {
     /* used by AlarmAlert */
     static String formatTime(final Context context, Calendar c) {
         String format = get24HourMode(context) ? M24 : M12;
+        return (c == null) ? "" : (String)DateFormat.format(format, c);
+    }
+    /* used by NightClock */
+    static String formatTimeWithSeconds(final Context context, Calendar c) {
+        String format = get24HourMode(context) ? SM24 : SM12;
         return (c == null) ? "" : (String)DateFormat.format(format, c);
     }
 

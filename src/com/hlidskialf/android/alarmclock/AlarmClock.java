@@ -225,6 +225,14 @@ public class AlarmClock extends Activity {
                     startActivity(intent);
                 }
             });
+        mClockLayout.setOnLongClickListener( new View.OnLongClickListener() {
+            public boolean onLongClick(View v) {
+                    final Intent intent = new Intent(AlarmClock.this, NightClock.class);
+                    startActivity(intent);
+                    return true;
+            }
+        });
+
 
         setClockVisibility(mPrefs.getBoolean(PREF_SHOW_CLOCK, true));
     }

@@ -9,9 +9,7 @@
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
     <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
 
-    <application android:label="@string/app_label"
-                 android:icon="@drawable/alarming"
-		>
+    <application android:label="@string/app_label" android:icon="@drawable/alarming">
 
         <provider android:name="AlarmProvider" android:authorities="com.hlidskialf.android.alarmclock" />
 
@@ -24,6 +22,12 @@
         </activity>
 
         <activity android:name="SetAlarm" android:label="@string/set_alarm" />
+
+        <activity android:name="NightClock" android:label="@string/app_label" android:screenOrientation="landscape">
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
 
         <activity android:name="AlarmAlert" android:label="@string/alert_title"
                 android:excludeFromRecents="true"
