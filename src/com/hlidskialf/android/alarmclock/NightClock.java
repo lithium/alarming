@@ -68,7 +68,7 @@ public class NightClock extends Activity  implements View.OnClickListener, ViewS
 
   public View makeView() {
     TextView tv = new TextView(NightClock.this);
-    tv.setTextSize(90);
+    tv.setTextSize(85);
     return tv;
   }
 

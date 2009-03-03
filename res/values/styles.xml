@@ -20,4 +20,10 @@
         <item name="android:layout_height">fill_parent</item>
         <item name="android:layout_gravity">center_horizontal</item>
     </style>
+    <style name="NoTitle_FullScreen" parent="android:Theme">
+	<item name="android:windowNoTitle">true</item>
+	<item name="android:windowFullscreen">true</item>
+
+    </style>
+
 </resources>
