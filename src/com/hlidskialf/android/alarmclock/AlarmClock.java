@@ -311,7 +311,7 @@ public class AlarmClock extends Activity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item == mAddAlarmItem) {
-            Uri uri = Alarms.addAlarm(getContentResolver());
+            Uri uri = Alarms.addAlarm(getContentResolver(), this);
             // FIXME: scroll to new item.  mAlarmsList.requestChildRectangleOnScreen() ?
             String segment = uri.getPathSegments().get(1);
             int newId = Integer.parseInt(segment);

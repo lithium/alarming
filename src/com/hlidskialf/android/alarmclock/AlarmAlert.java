@@ -89,7 +89,7 @@ public class AlarmAlert extends Activity {
             ((DigitalClock)clockLayout).setAnimate();
         }
 
-	TextView nameText = (TextView)findViewById(R.id.alert_name);
+        TextView nameText = (TextView)findViewById(R.id.alert_name);
         String n = mKlaxon.getName();
         if (nameText != null && n != null) {
             nameText.setText(mKlaxon.getName());

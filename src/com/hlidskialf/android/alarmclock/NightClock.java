@@ -11,6 +11,7 @@ import android.widget.TextSwitcher;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
 import android.app.Activity;
+import android.view.LayoutInflater;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -26,11 +27,14 @@ public class NightClock extends Activity  implements View.OnClickListener, ViewS
   private Calendar mCal;
   private Handler mHandler;
   private Runnable mCallback;
+  private LayoutInflater mInflater;
 
   @Override
   protected void onCreate(Bundle icicle) {
     super.onCreate(icicle);
     getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+
+    mInflater = getLayoutInflater();
 
     setContentView(R.layout.nightclock);
 
@@ -38,6 +42,8 @@ public class NightClock extends Activity  implements View.OnClickListener, ViewS
     mSwitcher.setFactory(this);
     mSwitcher.setInAnimation( AnimationUtils.loadAnimation(this, android.R.anim.fade_in) );
     mSwitcher.setOutAnimation( AnimationUtils.loadAnimation(this, android.R.anim.fade_out) );
+    //mSwitcher.setInAnimation( AnimationUtils.loadAnimation(this, android.R.anim.slide_in_left) );
+    //mSwitcher.setOutAnimation( AnimationUtils.loadAnimation(this, android.R.anim.slide_out_right) );
     mSwitcher.setOnClickListener(this);
 
     mCal = Calendar.getInstance();
@@ -67,9 +73,12 @@ public class NightClock extends Activity  implements View.OnClickListener, ViewS
   }
 
   public View makeView() {
+    return mInflater.inflate(R.layout.nightclock_text, null);
+    /*
     TextView tv = new TextView(NightClock.this);
     tv.setTextSize(85);
     return tv;
+    */
   }
 
   public void onClick(View v) {

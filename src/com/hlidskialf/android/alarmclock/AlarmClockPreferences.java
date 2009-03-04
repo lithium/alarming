@@ -47,7 +47,8 @@ public class AlarmClockPreferences extends PreferenceActivity
         mDelayPref = (SliderPreference) findPreference("default_delay");
 
 
-        mSharedPrefs = getPreferences(Context.MODE_PRIVATE);
+        mSharedPrefs = getSharedPreferences(AlarmClock.PREFERENCES, 0);
+
         Ringtone ringtone = RingtoneManager.getRingtone(this, Uri.parse(mSharedPrefs.getString("default_alarm", Settings.System.DEFAULT_RINGTONE_URI.toString())) );
         mAlarmPref.setSummary(ringtone.getTitle(this));
 

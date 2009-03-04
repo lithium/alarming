@@ -26,6 +26,7 @@ import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.BaseColumns;
@@ -43,6 +44,7 @@ public class Alarms {
     public final static String ALARM_ALERT_ACTION = "com.hlidskialf.android.alarmclock.ALARM_ALERT";
     public final static String ID = "alarm_id";
     public final static String TIME = "alarm_time";
+    public final static String IS_DEMO = "alarm_is_demo";
 
     final static String PREF_SNOOZE_ID = "snooze_id";
     final static String PREF_SNOOZE_TIME = "snooze_time";
@@ -53,7 +55,7 @@ public class Alarms {
     private final static String M12 = "h:mm aa";
     private final static String M24 = "k:mm";
 
-    private final static String SM12 = "h:mm:ss aa";
+    private final static String SM12 = "h:mm:ss";
     private final static String SM24 = "k:mm:ss";
 
     static class DaysOfWeek {
@@ -309,9 +311,20 @@ public class Alarms {
     /**
      * Creates a new Alarm.
      */
-    public synchronized static Uri addAlarm(ContentResolver contentResolver) {
+    public synchronized static Uri addAlarm(ContentResolver contentResolver, Context context) {
         ContentValues values = new ContentValues();
         values.put(Alarms.AlarmColumns.HOUR, 8);
+
+        SharedPreferences prefs = context.getSharedPreferences(AlarmClock.PREFERENCES, 0);
+        values.put(Alarms.AlarmColumns.SNOOZE, prefs.getInt("default_snooze",10));
+        values.put(Alarms.AlarmColumns.DURATION, prefs.getInt("default_duration",0));
+        values.put(Alarms.AlarmColumns.DELAY, prefs.getInt("default_delay",0));
+        values.put(Alarms.AlarmColumns.VOLUME, prefs.getInt("default_volume",100));
+        values.put(Alarms.AlarmColumns.CRESCENDO, prefs.getInt("default_crescendo",0));
+        values.put(Alarms.AlarmColumns.DAYS_OF_WEEK, prefs.getInt("default_repeat",0x1f)); 
+        values.put(Alarms.AlarmColumns.ALERT, prefs.getString("default_alarm",Settings.System.DEFAULT_RINGTONE_URI.toString())); 
+        
+
         return contentResolver.insert(AlarmColumns.CONTENT_URI, values);
     }
 

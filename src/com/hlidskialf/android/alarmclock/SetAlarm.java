@@ -27,8 +27,6 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.CheckBoxPreference;
@@ -119,15 +117,6 @@ public class SetAlarm extends PreferenceActivity
     protected void onCreate(Bundle icicle) {
         super.onCreate(icicle);
 
-        /* *** This is the wrong place!, needs to be in getAlarm ***
-        SharedPreferences prefs = getPreferences(Context.MODE_PRIVATE);
-        mDaysOfWeek = new Alarms.DaysOfWeek( prefs.getInt("default_repeat",0x1f) );
-        mVolume = prefs.getInt("default_volume",100); 
-        mCrescendo = prefs.getInt("default_crescendo",0);
-        mSnooze = prefs.getInt("default_snooze",10);
-        mDuration = prefs.getInt("default_duration",0);
-        mDelay = prefs.getInt("default_delay",0);
-        */
 
         addPreferencesFromResource(R.xml.alarm_prefs);
         mAlarmOnPref = (CheckBoxPreference)findPreference("on");
