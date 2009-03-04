@@ -27,6 +27,8 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.CheckBoxPreference;
@@ -43,6 +45,10 @@ import android.widget.Toast;
  */
 public class SetAlarm extends PreferenceActivity
         implements Alarms.AlarmSettings, TimePickerDialog.OnTimeSetListener {
+
+    private static final int OPTION_MENU_DELETE=1;
+    private static final int OPTION_MENU_FIRE=2;
+    private static final int OPTION_MENU_DEBUG=3;
 
     private CheckBoxPreference mAlarmOnPref;
     private Preference mTimePref;
@@ -112,6 +118,16 @@ public class SetAlarm extends PreferenceActivity
     @Override
     protected void onCreate(Bundle icicle) {
         super.onCreate(icicle);
+
+        /* *** This is the wrong place!, needs to be in getAlarm ***
+        SharedPreferences prefs = getPreferences(Context.MODE_PRIVATE);
+        mDaysOfWeek = new Alarms.DaysOfWeek( prefs.getInt("default_repeat",0x1f) );
+        mVolume = prefs.getInt("default_volume",100); 
+        mCrescendo = prefs.getInt("default_crescendo",0);
+        mSnooze = prefs.getInt("default_snooze",10);
+        mDuration = prefs.getInt("default_duration",0);
+        mDelay = prefs.getInt("default_delay",0);
+        */
 
         addPreferencesFromResource(R.xml.alarm_prefs);
         mAlarmOnPref = (CheckBoxPreference)findPreference("on");
@@ -477,11 +493,15 @@ public class SetAlarm extends PreferenceActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
 
-        mDeleteAlarmItem = menu.add(0, 0, 0, R.string.delete_alarm);
-        mDeleteAlarmItem.setIcon(android.R.drawable.ic_menu_delete);
+        MenuItem mi;
+        mi = menu.add(0, 0, OPTION_MENU_FIRE, R.string.fire_alarm);
+
+        mi = menu.add(0, 0, OPTION_MENU_DELETE, R.string.delete_alarm);
+        mi.setIcon(android.R.drawable.ic_menu_delete);
+
 
         if (AlarmClock.DEBUG) {
-            mTestAlarmItem = menu.add(0, 0, 0, "test alarm");
+            mTestAlarmItem = menu.add(0, 0, OPTION_MENU_DEBUG, "test alarm");
         }
 
 
@@ -489,16 +509,22 @@ public class SetAlarm extends PreferenceActivity
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item == mDeleteAlarmItem) {
+        switch (item.getOrder()) {
+          case OPTION_MENU_DELETE:
             Alarms.deleteAlarm(this, mId);
             finish();
             return true;
-        }
-        if (AlarmClock.DEBUG) {
-            if (item == mTestAlarmItem) {
-                setTestAlarm();
-                return true;
+          case OPTION_MENU_FIRE:
+            Alarms.enableAlert(this, mId, System.currentTimeMillis());
+            return true;
+          case OPTION_MENU_DEBUG:
+            if (AlarmClock.DEBUG) {
+                if (item == mTestAlarmItem) {
+                    setTestAlarm();
+                    return true;
+                }
             }
+            break;
         }
 
         return false;

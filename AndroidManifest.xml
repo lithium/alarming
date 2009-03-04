@@ -11,6 +11,13 @@
 
     <application android:label="@string/app_label" android:icon="@drawable/alarming">
 
+        <activity android:name="AlarmClockPreferences" android:label="@string/preferences">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.PREFERENCE" />
+            </intent-filter>
+        </activity>
+
         <provider android:name="AlarmProvider" android:authorities="com.hlidskialf.android.alarmclock" />
 
         <activity android:name="AlarmClock" android:label="@string/app_label">

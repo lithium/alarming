@@ -51,8 +51,13 @@ public class AlarmClock extends Activity {
 
     final static String PREFERENCES = "Alarming";
     final static int SET_ALARM = 1;
+    final static int SET_PREFERENCES = 2;
     final static String PREF_CLOCK_FACE = "face";
     final static String PREF_SHOW_CLOCK = "show_clock";
+
+    final static int MENU_ITEM_EDIT=1;
+    final static int MENU_ITEM_DELETE=2;
+    final static int MENU_ITEM_FIRE=3;
 
     /** Cap alarm count at this number */
     final static int MAX_ALARM_COUNT = 12;
@@ -68,6 +73,7 @@ public class AlarmClock extends Activity {
     private MenuItem mAddAlarmItem;
     private MenuItem mToggleClockItem;
     private MenuItem mAboutItem;
+    private MenuItem mSettingsItem;
     private ListView mAlarmsList;
     private Cursor mCursor;
 
@@ -158,8 +164,9 @@ public class AlarmClock extends Activity {
                     public void onCreateContextMenu(ContextMenu menu, View view,
                                                     ContextMenuInfo menuInfo) {
                         menu.setHeaderTitle(Alarms.formatTime(AlarmClock.this, c));
-                        MenuItem editAlarmItem = menu.add(0, id, 0, R.string.edit_alarm);
-                        MenuItem deleteAlarmItem = menu.add(0, id, 1, R.string.delete_alarm);
+                        MenuItem editAlarmItem = menu.add(0, id, MENU_ITEM_EDIT, R.string.edit_alarm);
+                        MenuItem deleteAlarmItem = menu.add(0, id, MENU_ITEM_DELETE, R.string.delete_alarm);
+                        MenuItem fireAlarmItem = menu.add(0, id, MENU_ITEM_FIRE, R.string.fire_alarm);
                     }
                 });
         }
@@ -168,13 +175,16 @@ public class AlarmClock extends Activity {
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         switch(item.getOrder()) {
-            case 0: // edit
+            case MENU_ITEM_EDIT:
                 Intent intent = new Intent(AlarmClock.this, SetAlarm.class);
                 intent.putExtra(Alarms.ID, item.getItemId());
                 startActivityForResult(intent, SET_ALARM);
                 break;
-            case 1: // delete
+            case MENU_ITEM_DELETE:
                 Alarms.deleteAlarm(this, item.getItemId());
+                break;
+            case MENU_ITEM_FIRE:
+                Alarms.enableAlert(this, item.getItemId(), System.currentTimeMillis());
                 break;
         }
 
@@ -276,8 +286,11 @@ public class AlarmClock extends Activity {
         mToggleClockItem = menu.add(0, 0, 0, R.string.hide_clock);
         mToggleClockItem.setIcon(R.drawable.ic_menu_clock_face);
 
-	mAboutItem = menu.add(0, 0, 0, R.string.about);
-	mAboutItem.setIcon(android.R.drawable.ic_menu_info_details);
+        mSettingsItem = menu.add(0, 0, 0, R.string.preferences);
+        mSettingsItem.setIcon(android.R.drawable.ic_menu_preferences);
+
+        mAboutItem = menu.add(0, 0, 0, R.string.about);
+        mAboutItem.setIcon(android.R.drawable.ic_menu_info_details);
 
         return true;
     }
@@ -319,7 +332,14 @@ public class AlarmClock extends Activity {
                                     setPositiveButton(R.string.about_ok,null).
                                     create();
                 dia.show();
-    	}
+    	  } else if (item == mSettingsItem) {
+            Intent intent = new Intent(AlarmClock.this, AlarmClockPreferences.class)
+                                  .setAction(Intent.ACTION_MAIN)
+                                  .addCategory(Intent.CATEGORY_PREFERENCE);
+            startActivity(intent); 
+            return true;
+        }
+
 
         return false;
     }
