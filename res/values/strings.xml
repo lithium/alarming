@@ -22,6 +22,8 @@
     <string name="app_description">Alarming! - AlarmClock enhanced</string>
     <string name="app_version">1.0rc3</string>
 	
+    <string name="preferences">Preferences</string>
+
     <string name="about">About</string>
     <string name="about_title">About Alarming!</string>
     <string name="about_ok">Ok</string>
@@ -40,6 +42,9 @@
 
     <!-- Context Menu Item on Alarm Settings screen: Delete alarm -->
     <string name="delete_alarm">Delete alarm</string>
+
+    <!-- Context Menu Item on Alarm Settings screen: Preview alarm -->
+    <string name="fire_alarm">Preview alarm</string>
 
     <!-- Menu item on Alarm Clock screen: Show clock -->
     <string name="show_clock">Show clock</string>
