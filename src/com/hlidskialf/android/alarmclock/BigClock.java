@@ -4,6 +4,8 @@ package com.hlidskialf.android.alarmclock;
 import android.os.Bundle;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.BroadcastReceiver;
 import android.view.View;
 import android.view.Window;
 import android.widget.LinearLayout;
@@ -15,6 +17,8 @@ import android.view.LayoutInflater;
 import java.util.Calendar;
 import java.util.Date;
 
+import android.os.PowerManager;
+import android.os.BatteryManager;
 import android.os.Handler;
 import java.lang.Runnable;
 
@@ -29,10 +33,17 @@ public class BigClock extends Activity  implements View.OnClickListener, ViewSwi
   private Runnable mCallback;
   private LayoutInflater mInflater;
 
+  private boolean mDoWakeLock;
+  private PowerManager mPower;
+  private BatteryManager mBattery;
+  private BroadcastReceiver mBatteryReceiver;
+  private PowerManager.WakeLock mWakeLock;
+
   @Override
   protected void onCreate(Bundle icicle) {
     super.onCreate(icicle);
     getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+
 
     mInflater = getLayoutInflater();
 
@@ -46,9 +57,35 @@ public class BigClock extends Activity  implements View.OnClickListener, ViewSwi
     //mSwitcher.setOutAnimation( AnimationUtils.loadAnimation(this, android.R.anim.slide_out_right) );
     mSwitcher.setOnClickListener(this);
 
-    mCal = Calendar.getInstance();
 
-    updateClock();
+    mDoWakeLock = getSharedPreferences(AlarmClock.PREFERENCES, 0).getBoolean("bigclock_wake_lock", false);
+    if (mDoWakeLock) {
+        mPower = (PowerManager)getSystemService(Context.POWER_SERVICE);
+        mWakeLock = mPower.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, BigClock.class.getName());
+    }
+
+    mCal = Calendar.getInstance();
+    mHandler = new Handler();
+    mBatteryReceiver = new BroadcastReceiver() {
+        public void onReceive(Context context, Intent intent) {
+           int flags = intent.getFlags();
+            android.util.Log.v("BigClock/battery",String.valueOf(flags));
+           if ((flags & BatteryManager.BATTERY_STATUS_CHARGING) != 0) {
+               if (mWakeLock != null) {
+                   mWakeLock.acquire();
+            android.util.Log.v("wakelock","acquire");
+               }
+           }
+        }
+    }; 
+  }
+  @Override
+  public void onResume() {
+    super.onResume();
+    if (mDoWakeLock) {
+  
+      registerReceiver(mBatteryReceiver, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
+    }
 
     mCallback = new Runnable() { 
       public void run() {
@@ -56,14 +93,22 @@ public class BigClock extends Activity  implements View.OnClickListener, ViewSwi
         mHandler.postDelayed(mCallback, 1000);
       }
     };
-    mHandler = new Handler();
-    mHandler.postDelayed(mCallback, 1000);
+    mHandler.postDelayed(mCallback, 0);
   }
   @Override
-  public void onStop() {
-    super.onStop();
-    if (mHandler != null && mCallback != null) 
+  public void onPause() {
+    if (mWakeLock != null && mWakeLock.isHeld()) {
+        mWakeLock.release();
+        android.util.Log.v("wakelock","release");
+    }
+    if (mDoWakeLock && mBatteryReceiver != null) {
+        unregisterReceiver(mBatteryReceiver);
+    }
+    if (mHandler != null && mCallback != null) {
       mHandler.removeCallbacks(mCallback);
+      mCallback = null;
+    }
+    super.onPause();
   }
   public void updateClock()
   {

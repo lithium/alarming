@@ -182,6 +182,7 @@ public class AlarmClock extends Activity {
                 break;
             case MENU_ITEM_DELETE:
                 Alarms.deleteAlarm(this, item.getItemId());
+                updateEmptyVisibility(mAlarmsList.getAdapter().getCount() - 1);
                 break;
             case MENU_ITEM_FIRE:
                 Alarms.enableAlert(this, item.getItemId(), System.currentTimeMillis());
@@ -227,6 +228,8 @@ public class AlarmClock extends Activity {
         mAlarmsList.setVerticalScrollBarEnabled(true);
         mAlarmsList.setItemsCanFocus(true);
 
+        updateEmptyVisibility(mCursor.getCount());
+
         mClockLayout = (ViewGroup) findViewById(R.id.clock_layout);
         mClockLayout.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
@@ -237,7 +240,6 @@ public class AlarmClock extends Activity {
             });
         mClockLayout.setOnLongClickListener( new View.OnLongClickListener() {
             public boolean onLongClick(View v) {
-        android.util.Log.v( "click", mPrefs.getAll().toString() );
             
                 if (!mPrefs.getBoolean("bigclock_enable", true)) return false;
 
@@ -256,6 +258,7 @@ public class AlarmClock extends Activity {
         super.onResume();
 
         setClockVisibility(mPrefs.getBoolean(PREF_SHOW_CLOCK, true));
+        updateEmptyVisibility( mAlarmsList.getAdapter().getCount() );
 
         int face = mPrefs.getInt(PREF_CLOCK_FACE, 0);
         if (mFace != face) {
@@ -324,6 +327,7 @@ public class AlarmClock extends Activity {
             Intent intent = new Intent(AlarmClock.this, SetAlarm.class);
             intent.putExtra(Alarms.ID, newId);
             startActivityForResult(intent, SET_ALARM);
+            updateEmptyVisibility(1);
             return true;
         /*} else if (item == mToggleClockItem) {
             setClockVisibility(!getClockVisibility());
@@ -361,5 +365,8 @@ public class AlarmClock extends Activity {
 
     private void saveClockVisibility() {
         mPrefs.edit().putBoolean(PREF_SHOW_CLOCK, getClockVisibility()).commit();
+    }
+    private void updateEmptyVisibility(int count) {
+        findViewById(R.id.alarms_list_empty).setVisibility(count < 1 ? View.VISIBLE : View.GONE);
     }
 }

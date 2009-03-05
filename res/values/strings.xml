@@ -25,6 +25,8 @@
 	
     <string name="preferences">Preferences</string>
 
+    <string name="alarm_list_empty">No alarms set.\n\nAdd alarms from menu.</string>
+
     <string name="about">About</string>
     <string name="about_title">About Alarming!</string>
     <string name="about_ok">Ok</string>
