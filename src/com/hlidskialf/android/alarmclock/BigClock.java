@@ -39,6 +39,7 @@ public class BigClock extends Activity  implements View.OnClickListener, ViewSwi
   private BroadcastReceiver mBatteryReceiver;
   private PowerManager.WakeLock mWakeLock;
 
+
   @Override
   protected void onCreate(Bundle icicle) {
     super.onCreate(icicle);
@@ -68,22 +69,34 @@ public class BigClock extends Activity  implements View.OnClickListener, ViewSwi
     mHandler = new Handler();
     mBatteryReceiver = new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {
-           int flags = intent.getFlags();
-            android.util.Log.v("BigClock/battery",String.valueOf(flags));
-           if ((flags & BatteryManager.BATTERY_STATUS_CHARGING) != 0) {
-               if (mWakeLock != null) {
-                   mWakeLock.acquire();
-            android.util.Log.v("wakelock","acquire");
+           int plugged = intent.getIntExtra("plugged", 0);
+           if (mWakeLock == null) return;
+           if (plugged == BatteryManager.BATTERY_PLUGGED_AC || plugged ==  BatteryManager.BATTERY_PLUGGED_USB) 
+           {
+               if (!mWakeLock.isHeld()) {
+                  mWakeLock.acquire();
+                  android.util.Log.v("BigClock","wakelock/acquire");
                }
+           } else {
+              mWakeLock.release();
+              android.util.Log.v("BigClock","wakelock/release-unplug");
            }
         }
     }; 
   }
+  @Override 
+  protected void onDestroy() {
+    if (mWakeLock != null && mWakeLock.isHeld()) {
+        mWakeLock.release();
+        android.util.Log.v("BigClock","wakelock/release-destroy");
+    }
+    super.onDestroy();
+  }
   @Override
   public void onResume() {
     super.onResume();
-    if (mDoWakeLock) {
-  
+
+    if (mDoWakeLock && mBatteryReceiver != null) {
       registerReceiver(mBatteryReceiver, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
     }
 
@@ -99,7 +112,7 @@ public class BigClock extends Activity  implements View.OnClickListener, ViewSwi
   public void onPause() {
     if (mWakeLock != null && mWakeLock.isHeld()) {
         mWakeLock.release();
-        android.util.Log.v("wakelock","release");
+        android.util.Log.v("BigClock","wakelock/release-pause");
     }
     if (mDoWakeLock && mBatteryReceiver != null) {
         unregisterReceiver(mBatteryReceiver);
@@ -119,15 +132,9 @@ public class BigClock extends Activity  implements View.OnClickListener, ViewSwi
 
   public View makeView() {
     return mInflater.inflate(R.layout.bigclock_text, null);
-    /*
-    TextView tv = new TextView(BigClock.this);
-    tv.setTextSize(85);
-    return tv;
-    */
   }
 
-  public void onClick(View v) {
-    finish();
-  }
+  public void onClick(View v) { finish(); }
+  public boolean onKeyDown(int keyCode, android.view.KeyEvent event) { finish(); return true; }
 
 }
