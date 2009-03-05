@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+  <CheckBoxPreference android:key="show_clock" android:title="@string/show_clock" />
+
+  <PreferenceCategory android:title="@string/nightclock_prefs" />
+  <CheckBoxPreference android:key="nightclock_enable" android:title="@string/nightclock_enable" />
+  <CheckBoxPreference android:key="nightclock_wake_lock" android:title="@string/nightclock_wake_lock" android:dependency="nightclock_enable" />
+
+  <PreferenceCategory android:title="@string/alarm_defaults"/>
+  <PreferenceScreen android:title="@string/alarm_defaults">
+    <PreferenceCategory android:title="@string/alarm_defaults"/>
     <com.hlidskialf.android.alarmclock.AlarmPreference android:key="default_alarm" 
         android:title="@string/alert"
         android:ringtoneType="alarm"
@@ -49,4 +58,5 @@
         zeroText = "@string/duration_infinite"
         unitsText = "@string/duration_unit"
         />
+  </PreferenceScreen>
 </PreferenceScreen>

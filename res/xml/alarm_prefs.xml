@@ -15,7 +15,8 @@
 -->
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <PreferenceCategory android:title="@string/set_alarm"/>
+    <PreferenceCategory android:title="@string/alarm_settings"/>
+
     <CheckBoxPreference android:key="on" 
         android:title="@string/enable"/>
     <EditTextPreference android:key="name" 
@@ -35,6 +36,16 @@
         zeroText = "@string/snooze_disabled"
         unitsText = "@string/snooze_unit"
         />
+    <com.hlidskialf.android.alarmclock.SliderPreference android:key="duration"
+        android:title="@string/alarm_duration"
+        android:dialogTitle="@string/duration_title"
+        android:dialogLayout="@layout/slider_dialog"
+        dialogMessage="@string/duration_message"
+        zeroText = "@string/duration_infinite"
+        unitsText = "@string/duration_unit"
+        />
+
+    <PreferenceCategory android:title="@string/alarm_alert_settings"/>
     <CheckBoxPreference android:key="vibrate" 
         android:summary="@string/alarm_vibrate_summary"
         android:title="@string/alarm_vibrate"/>
@@ -67,13 +78,5 @@
         dialogMessage="@string/delay_message"
         zeroText = "@string/delay_zero"
         unitsText = "@string/delay_unit"
-        />
-    <com.hlidskialf.android.alarmclock.SliderPreference android:key="duration"
-        android:title="@string/alarm_duration"
-        android:dialogTitle="@string/duration_title"
-        android:dialogLayout="@layout/slider_dialog"
-        dialogMessage="@string/duration_message"
-        zeroText = "@string/duration_infinite"
-        unitsText = "@string/duration_unit"
         />
 </PreferenceScreen>

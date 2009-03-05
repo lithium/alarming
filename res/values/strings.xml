@@ -34,6 +34,8 @@
     No warranty of any kind provided.\nNo affiliation with above parties implied.
     </string>
 
+    <string name="alarm_defaults">Alarm Defaults</string>
+
     <!-- Menu item on Alarm Clock screen: Add alarm -->
     <string name="add_alarm">Add alarm</string>
 
@@ -48,6 +50,13 @@
 
     <!-- Menu item on Alarm Clock screen: Show clock -->
     <string name="show_clock">Show clock</string>
+
+    <string name="nightclock_prefs">Night Clock Preferences</string>
+    <string name="nightclock_enable">Enable night clock</string>
+    <string name="nightclock_wake_lock">Night clock never sleeps</string>
+
+    <string name="alarm_settings">Alarm Preferences</string>
+    <string name="alarm_alert_settings">Ringtone Preferences</string>
 
     <!-- Menu item on Alarm Clock screen: Hide clock -->
     <string name="hide_clock">Hide clock</string>

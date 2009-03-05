@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
         package="com.hlidskialf.android.alarmclock"
-        android:versionCode="104"
-        android:versionName="1.0rc3">
+        android:versionCode="1101"
+        android:versionName="1.1rc1">
 
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
