@@ -78,8 +78,10 @@ public class BigClock extends Activity  implements View.OnClickListener, ViewSwi
                   android.util.Log.v("BigClock","wakelock/acquire");
                }
            } else {
-              mWakeLock.release();
-              android.util.Log.v("BigClock","wakelock/release-unplug");
+               if (mWakeLock.isHeld()) {
+                  mWakeLock.release();
+                  android.util.Log.v("BigClock","wakelock/release-unplug");
+               }
            }
         }
     }; 
