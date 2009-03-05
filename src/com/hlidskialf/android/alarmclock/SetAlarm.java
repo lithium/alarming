@@ -255,10 +255,20 @@ public class SetAlarm extends PreferenceActivity
                 mVibrateOnly = true;
                 mVibratePref.setChecked(true);
                 mVibratePref.setTitle(R.string.alarm_vibrate_only);
+
+                mVolumePref.setEnabled(false);
+                mAlarmPref.setEnabled(false);
+                mCrescendoPref.setEnabled(false);
+                mDelayPref.setEnabled(false);
               } else {
                 mVibrateOnly = false;
                 mVibratePref.setChecked(false);
                 mVibratePref.setTitle(R.string.alarm_vibrate);
+
+                mVolumePref.setEnabled(true);
+                mAlarmPref.setEnabled(true);
+                mCrescendoPref.setEnabled(true);
+                mDelayPref.setEnabled(true);
               }
             }
             saveAlarm(false);
@@ -298,8 +308,12 @@ public class SetAlarm extends PreferenceActivity
         mName = name;
 
         if (mVibrateOnly) {
-          mVibratePref.setTitle(R.string.alarm_vibrate_only);
-          mVibratePref.setChecked(true);
+            mVibratePref.setTitle(R.string.alarm_vibrate_only);
+            mVibratePref.setChecked(true);
+            mVolumePref.setEnabled(false);
+            mAlarmPref.setEnabled(false);
+            mCrescendoPref.setEnabled(false);
+            mDelayPref.setEnabled(false);
         }
 
         if (alert == null || alert.length() == 0) {

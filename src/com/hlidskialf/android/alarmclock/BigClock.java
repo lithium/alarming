@@ -21,7 +21,7 @@ import java.lang.Runnable;
 import android.view.animation.AnimationUtils;
 
 
-public class NightClock extends Activity  implements View.OnClickListener, ViewSwitcher.ViewFactory
+public class BigClock extends Activity  implements View.OnClickListener, ViewSwitcher.ViewFactory
 {
   private TextSwitcher mSwitcher;
   private Calendar mCal;
@@ -36,9 +36,9 @@ public class NightClock extends Activity  implements View.OnClickListener, ViewS
 
     mInflater = getLayoutInflater();
 
-    setContentView(R.layout.nightclock);
+    setContentView(R.layout.bigclock);
 
-    mSwitcher = (TextSwitcher)findViewById(R.id.nightclock_time);
+    mSwitcher = (TextSwitcher)findViewById(R.id.bigclock_time);
     mSwitcher.setFactory(this);
     mSwitcher.setInAnimation( AnimationUtils.loadAnimation(this, android.R.anim.fade_in) );
     mSwitcher.setOutAnimation( AnimationUtils.loadAnimation(this, android.R.anim.fade_out) );
@@ -52,7 +52,7 @@ public class NightClock extends Activity  implements View.OnClickListener, ViewS
 
     mCallback = new Runnable() { 
       public void run() {
-        NightClock.this.updateClock();
+        BigClock.this.updateClock();
         mHandler.postDelayed(mCallback, 1000);
       }
     };
@@ -73,9 +73,9 @@ public class NightClock extends Activity  implements View.OnClickListener, ViewS
   }
 
   public View makeView() {
-    return mInflater.inflate(R.layout.nightclock_text, null);
+    return mInflater.inflate(R.layout.bigclock_text, null);
     /*
-    TextView tv = new TextView(NightClock.this);
+    TextView tv = new TextView(BigClock.this);
     tv.setTextSize(85);
     return tv;
     */

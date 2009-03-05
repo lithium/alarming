@@ -237,7 +237,11 @@ public class AlarmClock extends Activity {
             });
         mClockLayout.setOnLongClickListener( new View.OnLongClickListener() {
             public boolean onLongClick(View v) {
-                    final Intent intent = new Intent(AlarmClock.this, NightClock.class);
+        android.util.Log.v( "click", mPrefs.getAll().toString() );
+            
+                if (!mPrefs.getBoolean("bigclock_enable", true)) return false;
+
+                    final Intent intent = new Intent(AlarmClock.this, BigClock.class);
                     startActivity(intent);
                     return true;
             }
@@ -250,6 +254,8 @@ public class AlarmClock extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
+
+        setClockVisibility(mPrefs.getBoolean(PREF_SHOW_CLOCK, true));
 
         int face = mPrefs.getInt(PREF_CLOCK_FACE, 0);
         if (mFace != face) {
@@ -283,8 +289,8 @@ public class AlarmClock extends Activity {
         mAddAlarmItem = menu.add(0, 0, 0, R.string.add_alarm);
         mAddAlarmItem.setIcon(android.R.drawable.ic_menu_add);
 
-        mToggleClockItem = menu.add(0, 0, 0, R.string.hide_clock);
-        mToggleClockItem.setIcon(R.drawable.ic_menu_clock_face);
+        //mToggleClockItem = menu.add(0, 0, 0, R.string.hide_clock);
+        //mToggleClockItem.setIcon(R.drawable.ic_menu_clock_face);
 
         mSettingsItem = menu.add(0, 0, 0, R.string.preferences);
         mSettingsItem.setIcon(android.R.drawable.ic_menu_preferences);
@@ -303,8 +309,7 @@ public class AlarmClock extends Activity {
     public boolean onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
         mAddAlarmItem.setVisible(mAlarmsList.getChildCount() < MAX_ALARM_COUNT);
-        mToggleClockItem.setTitle(getClockVisibility() ? R.string.hide_clock :
-                                  R.string.show_clock);
+        //mToggleClockItem.setTitle(getClockVisibility() ? R.string.hide_clock : R.string.show_clock);
         return true;
     }
 
@@ -320,10 +325,11 @@ public class AlarmClock extends Activity {
             intent.putExtra(Alarms.ID, newId);
             startActivityForResult(intent, SET_ALARM);
             return true;
-        } else if (item == mToggleClockItem) {
+        /*} else if (item == mToggleClockItem) {
             setClockVisibility(!getClockVisibility());
             saveClockVisibility();
             return true;
+        */
         } else if (item == mAboutItem) {
                 View v = getLayoutInflater().inflate(R.layout.about_dialog,null);
                 AlertDialog dia = new AlertDialog.Builder(this).

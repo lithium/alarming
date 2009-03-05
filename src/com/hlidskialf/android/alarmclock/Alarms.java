@@ -787,7 +787,7 @@ public class Alarms {
         String format = get24HourMode(context) ? M24 : M12;
         return (c == null) ? "" : (String)DateFormat.format(format, c);
     }
-    /* used by NightClock */
+    /* used by BigClock */
     static String formatTimeWithSeconds(final Context context, Calendar c) {
         String format = get24HourMode(context) ? SM24 : SM12;
         return (c == null) ? "" : (String)DateFormat.format(format, c);

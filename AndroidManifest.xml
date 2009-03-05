@@ -30,7 +30,7 @@
 
         <activity android:name="SetAlarm" android:label="@string/set_alarm" />
 
-        <activity android:name="NightClock" android:label="@string/app_label" 
+        <activity android:name="BigClock" android:label="@string/app_label" 
 		  android:screenOrientation="landscape" android:theme="@style/NoTitle_FullScreen">
             <intent-filter>
                 <category android:name="android.intent.category.DEFAULT" />

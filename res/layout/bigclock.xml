@@ -5,7 +5,7 @@
 	android:layout_gravity="center"
     android:orientation="vertical">
 
-    <TextSwitcher android:id="@+id/nightclock_time"
+    <TextSwitcher android:id="@+id/bigclock_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"

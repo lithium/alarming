@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.Preference;
+import android.preference.CheckBoxPreference;
 import android.preference.PreferenceScreen;
 import android.preference.PreferenceActivity;
 import android.net.Uri;
@@ -15,6 +16,7 @@ import android.provider.Settings;
 
 public class AlarmClockPreferences extends PreferenceActivity
 {
+    private CheckBoxPreference mShowClockPref,mBigClockPref,mBigClockSleepPref;
     private AlarmPreference mAlarmPref;
     private RepeatPreference mRepeatPref;
     private SliderPreference mVolumePref;
@@ -37,6 +39,11 @@ public class AlarmClockPreferences extends PreferenceActivity
         super.onCreate(icicle);
         addPreferencesFromResource(R.xml.preferences);
 
+        mSharedPrefs = getSharedPreferences(AlarmClock.PREFERENCES, 0);
+        
+        mShowClockPref = (CheckBoxPreference) findPreference("show_clock");
+        mBigClockPref = (CheckBoxPreference) findPreference("bigclock_enable");
+        mBigClockSleepPref = (CheckBoxPreference) findPreference("bigclock_wake_lock");
 
         mAlarmPref = (AlarmPreference) findPreference("default_alarm");
         mRepeatPref = (RepeatPreference) findPreference("default_repeat");
@@ -46,8 +53,25 @@ public class AlarmClockPreferences extends PreferenceActivity
         mDurationPref = (SliderPreference) findPreference("default_duration");
         mDelayPref = (SliderPreference) findPreference("default_delay");
 
+        mShowClockPref.setOnPreferenceChangeListener( new Preference.OnPreferenceChangeListener() {
+            public boolean onPreferenceChange(Preference pref, Object newValue) {
+                mSharedPrefs.edit().putBoolean("show_clock", (Boolean)newValue).commit();
+                return true;
+            }
+        });
+        mBigClockPref.setOnPreferenceChangeListener( new Preference.OnPreferenceChangeListener() {
+            public boolean onPreferenceChange(Preference pref, Object newValue) {
+                mSharedPrefs.edit().putBoolean("bigclock_enable", (Boolean)newValue).commit();
+                return true;
+            }
+        });
+        mBigClockSleepPref.setOnPreferenceChangeListener( new Preference.OnPreferenceChangeListener() {
+            public boolean onPreferenceChange(Preference pref, Object newValue) {
+                mSharedPrefs.edit().putBoolean("bigclock_wake_lock", (Boolean)newValue).commit();
+                return true;
+            }
+        });
 
-        mSharedPrefs = getSharedPreferences(AlarmClock.PREFERENCES, 0);
 
         Ringtone ringtone = RingtoneManager.getRingtone(this, Uri.parse(mSharedPrefs.getString("default_alarm", Settings.System.DEFAULT_RINGTONE_URI.toString())) );
         mAlarmPref.setSummary(ringtone.getTitle(this));
