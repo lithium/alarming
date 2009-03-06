@@ -44,6 +44,9 @@ class AlarmKlaxon implements Alarms.AlarmSettings {
 
     private static long[] sVibratePattern = new long[] { 500, 500 };
 
+
+    private Runnable mCrescendoTask;
+
     private static AlarmKlaxon sInstance;
 
     private int mAlarmId;
@@ -141,7 +144,7 @@ class AlarmKlaxon implements Alarms.AlarmSettings {
 
                 try {
                     mMaxVolume = (float)mVolume/(float)100;
-                    mCurVolume = mCrescendo > 0 ? 0 : mMaxVolume; 
+                    mCurVolume = mCrescendo > 0 ? 0.05f : mMaxVolume; 
                     mMediaPlayer.setDataSource(context, Uri.parse(mAlert));
                     mMediaPlayer.setAudioStreamType(AudioManager.STREAM_ALARM);
                     mMediaPlayer.setVolume(mCurVolume,mCurVolume);
@@ -149,18 +152,29 @@ class AlarmKlaxon implements Alarms.AlarmSettings {
                     mMediaPlayer.prepare();
 
                     mCrescendo *= 1000;
-                    final float delta = mMaxVolume / ((float)mCrescendo / (float)(mMediaPlayer.getDuration()+mDelay));
+                    final int num_steps = 10;
+                    final int delay = mCrescendo / num_steps;
+                    final float delta = mMaxVolume / (float)num_steps;
+                    final Handler h = new Handler();
+    
+                    mCrescendoTask = new Runnable() {
+                        public void run() {
+                            if (mCurVolume < mMaxVolume) {
+                                mCurVolume += delta;
+                                mMediaPlayer.setVolume(mCurVolume,mCurVolume);
+                                if (mCurVolume < mMaxVolume)
+                                    h.postDelayed(mCrescendoTask, delay);
+                                else
+                                    mCrescendoTask = null;
+                            }
+                        }
+                    };
+                    h.postDelayed(mCrescendoTask, delay);
 
                     mMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                       public void onCompletion(MediaPlayer mp)
                       {
-                        if (mCurVolume < mMaxVolume) {
-                            mCurVolume += delta;
-                            mp.setVolume(mCurVolume,mCurVolume);
-                        }
-
                         if (mDelay > 0) {
-                            Handler h = new Handler();
                             h.postDelayed(new Runnable() {
                                     public void run() { mMediaPlayer.start(); }
                                 }, mDelay);

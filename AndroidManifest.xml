@@ -31,11 +31,7 @@
         <activity android:name="SetAlarm" android:label="@string/set_alarm" />
 
         <activity android:name="BigClock" android:label="@string/app_label" 
-		  android:screenOrientation="landscape" android:theme="@style/NoTitle_FullScreen">
-            <intent-filter>
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
+		  android:screenOrientation="landscape" android:theme="@style/NoTitle_FullScreen" />
 
         <activity android:name="AlarmAlert" android:label="@string/alert_title"
                 android:excludeFromRecents="true"

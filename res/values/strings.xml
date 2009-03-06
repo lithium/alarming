@@ -20,7 +20,7 @@
     <string name="app_label">Alarming!</string>
 
     <string name="app_description">Alarming! - AlarmClock enhanced</string>
-    <string name="app_version">1.0rc3</string>
+    <string name="app_version">1.1rc1</string>
     <string name="app_preferences">Alarming! Preferences</string>
 	
     <string name="preferences">Preferences</string>
@@ -31,8 +31,8 @@
     <string name="about_title">About Alarming!</string>
     <string name="about_ok">Ok</string>
     <string name="about_text"><b>Original source</b>\n<u>http://source.android.com</u>\n\n
-    <b>Icon created by</b>\n<u>http://en.wikipedia.org/wiki/User:Tkgd2007</u>\n\n
     <b>Source code available</b>\n<u>http://github.com/lithium/alarming</u>\n\n
+    <b>Icon created by</b>\n<u>http://en.wikipedia.org/wiki/User:Tkgd2007</u>\n\n
     Published by Hlidskialf Software\n\n
     No warranty of any kind provided.\nNo affiliation with above parties implied.
     </string>
