@@ -1,17 +1,17 @@
-The standard Alarm Clock also with:
+The Alarm Clock also featuring
 
-*NEW FEATURES*
-  Set defaults for alarms
-  Bed clock while plugged in
+v1.1
+  Alarm defaults 
   Preview alarm
+  Bed clock (long-click for large dim clock; wont sleep if charging)
 
-*FEATURES*
-  Named alarms
-  Set volume
+v1.0
+  Name alarm
+  Alarm volume
   Increase volume
-  Pause between alerts
-  Disable or set snooze
-  Disable or set auto-off
+  Pause between rings
+  Disable/set snooze
+  Disable/set silence
 
 Use the always free Tone Picker to use MP3s
 

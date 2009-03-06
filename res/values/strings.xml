@@ -55,11 +55,11 @@
     <string name="show_clock">Show clock</string>
     <string name="show_clock_summary">Show clock on alarm list screen</string>
 
-    <string name="bigclock_prefs">Big Clock Preferences</string>
-    <string name="bigclock_enable">Enable big clock</string>
-    <string name="bigclock_enable_summary">Long-click clock to see big clock</string>
-    <string name="bigclock_wake_lock">Big clock never sleeps</string>
-    <string name="bigclock_wake_lock_summary">Big clock disables standby if charging</string>
+    <string name="bigclock_prefs">Bed Clock Preferences</string>
+    <string name="bigclock_enable">Enable bed clock</string>
+    <string name="bigclock_enable_summary">Long-click clock to see bed clock</string>
+    <string name="bigclock_wake_lock">Bed clock never sleeps</string>
+    <string name="bigclock_wake_lock_summary">Bed clock disables standby if charging</string>
 
     <string name="alarm_settings">Alarm Settings</string>
     <string name="alarm_alert_settings">Ringtone Settings</string>
