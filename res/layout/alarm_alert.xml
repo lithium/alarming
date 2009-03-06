@@ -25,9 +25,9 @@
     <TextView android:id="@+id/alert_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-	android:textSize="18sp"
-	android:textColor="@color/white"
-	android:gravity="center"/>
+        android:textSize="18sp"
+        android:textColor="@color/white"
+        android:gravity="center"/>
 
     <LinearLayout
         android:id="@+id/clockView"

@@ -98,6 +98,7 @@ class AlarmKlaxon implements Alarms.AlarmSettings {
 
     public int getSnooze() { return mSnooze; }
     public String getName() { return mName; }
+    public int getDuration() { return mDuration; }
 
     synchronized void play(Context context, int alarmId) {
         ContentResolver contentResolver = context.getContentResolver();

@@ -367,6 +367,8 @@ public class AlarmClock extends Activity {
         mPrefs.edit().putBoolean(PREF_SHOW_CLOCK, getClockVisibility()).commit();
     }
     private void updateEmptyVisibility(int count) {
-        findViewById(R.id.alarms_list_empty).setVisibility(count < 1 ? View.VISIBLE : View.GONE);
+        View v = findViewById(R.id.alarms_list_empty);
+        if (v != null) 
+          v.setVisibility(count < 1 ? View.VISIBLE : View.GONE);
     }
 }

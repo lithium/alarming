@@ -498,6 +498,7 @@ public class SetAlarm extends PreferenceActivity
 
         MenuItem mi;
         mi = menu.add(0, 0, OPTION_MENU_FIRE, R.string.fire_alarm);
+        mi.setIcon(android.R.drawable.ic_menu_view);
 
         mi = menu.add(0, 0, OPTION_MENU_DELETE, R.string.delete_alarm);
         mi.setIcon(android.R.drawable.ic_menu_delete);

@@ -154,9 +154,7 @@ public class AlarmAlert extends Activity {
             public void onKilled() {
                 if (Log.LOGV) Log.v("onKilled()");
                 TextView silenced = (TextView)findViewById(R.id.silencedText);
-                silenced.setText(
-                        getString(R.string.alarm_alert_alert_silenced,
-                                  AlarmKlaxon.ALARM_TIMEOUT_SECONDS / 60));
+                silenced.setText(getString(R.string.alarm_alert_alert_silenced, mKlaxon.getDuration()));
                 silenced.setVisibility(View.VISIBLE);
 
                 /* don't allow snooze */

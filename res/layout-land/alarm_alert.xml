@@ -19,19 +19,20 @@
     android:id="@+id/root"
     android:layout_width="fill_parent" 
     android:layout_height="fill_parent"
-    android:paddingTop="2dp">
+    android:paddingTop="2dp"
+    android:orientation="vertical">
 
     <TextView android:id="@+id/alert_name"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-	android:textSize="18sp"
-	android:textColor="@color/white"
-	android:gravity="center"/>
+        android:textSize="18sp"
+        android:textColor="@color/white"
+        android:gravity="center"/>
 
     <LinearLayout
         android:layout_width="wrap_content" 
         android:layout_height="fill_parent"
-        android:orientation="vertical">
+        android:orientation="horizontal">
 
         <LinearLayout
             android:id="@+id/clockView"
@@ -39,45 +40,44 @@
             android:layout_height="wrap_content"
             android:gravity="center"/>
 
-        <TextView android:id="@+id/silencedText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingLeft="4dp"
-            android:paddingTop="2dp"
-            android:paddingBottom="2dp"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:visibility="gone"
-            android:gravity="center"
-            android:textColor="@color/red"
-            android:text="@string/alarm_alert_alert_silenced"/>
+        <LinearLayout
+            android:layout_width="wrap_content" 
+            android:layout_height="fill_parent"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/snooze"
+                android:layout_width="108dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" 
+                android:text="@string/alarm_alert_snooze_text" />
+
+            <!-- blank stretchable view -->
+            <View
+                android:layout_width="2dip"
+                android:layout_gravity="fill_vertical" 
+                android:layout_weight="1" 
+                android:layout_height="2dip"/>
+
+            <Button
+                android:id="@+id/dismiss"
+                android:layout_width="108dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" 
+                android:text="@string/alarm_alert_dismiss_text" />
+        </LinearLayout>
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="wrap_content" 
-        android:layout_height="fill_parent"
-        android:orientation="vertical">
-
-        <Button
-            android:id="@+id/snooze"
-            android:layout_width="108dip"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" 
-            android:text="@string/alarm_alert_snooze_text" />
-
-        <!-- blank stretchable view -->
-        <View
-            android:layout_width="2dip"
-            android:layout_gravity="fill_vertical" 
-            android:layout_weight="1" 
-            android:layout_height="2dip"/>
-
-        <Button
-            android:id="@+id/dismiss"
-            android:layout_width="108dip"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" 
-            android:text="@string/alarm_alert_dismiss_text" />
-
-    </LinearLayout>
+    <TextView android:id="@+id/silencedText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="4dp"
+        android:paddingTop="2dp"
+        android:paddingBottom="2dp"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:visibility="gone"
+        android:gravity="center"
+        android:textColor="@color/red"
+        android:text="@string/alarm_alert_alert_silenced"/>
 
 </LinearLayout>
