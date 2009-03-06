@@ -20,6 +20,7 @@
     <CheckBoxPreference android:key="on" 
         android:title="@string/enable"/>
     <EditTextPreference android:key="name" 
+        android:maxLength="20"
         android:title="@string/alarm_name"/>
     <Preference android:key="time" 
         android:title="@string/time"/>
