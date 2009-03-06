@@ -159,6 +159,8 @@ class AlarmKlaxon implements Alarms.AlarmSettings {
     
                     mCrescendoTask = new Runnable() {
                         public void run() {
+                            if (h == null || mMediaPlayer == null) return;
+
                             if (mCurVolume < mMaxVolume) {
                                 mCurVolume += delta;
                                 mMediaPlayer.setVolume(mCurVolume,mCurVolume);
