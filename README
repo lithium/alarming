@@ -1,15 +1,18 @@
-Alarming! - AlarmClock enhanced
+The standard Alarm Clock also with:
 
-The standard AlarmClock now with: 
-         
-  * Named alarms
-  * Set volume (0-100%)
-  * Increase volume (0-60s)
-  * Pause between alerts (0-1000ms)
-  * Disable snooze, or set (1-60m)
-  * Disable auto-off, or set (1-60m)
-  * 24hr/12hr format
-  * Silent alarms
+*NEW FEATURES*
+  Set defaults for alarms
+  Bed clock while plugged in
+  Preview alarm
 
-Based off of the open-source android AlarmClock
-Source code available at http://github.com/lithium/alarming
+*FEATURES*
+  Named alarms
+  Set volume
+  Increase volume
+  Pause between alerts
+  Disable or set snooze
+  Disable or set auto-off
+
+Use the always free Tone Picker to use MP3s
+
+Source code available
