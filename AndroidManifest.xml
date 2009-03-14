@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
         package="com.hlidskialf.android.alarmclock"
-        android:versionCode="1103"
-        android:versionName="1.1rc3">
+        android:versionCode="1201"
+        android:versionName="1.2rc1">
 
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
@@ -30,7 +30,10 @@
 
         <activity android:name="SetAlarm" android:label="@string/set_alarm" />
 
-        <activity android:name="BigClock" android:screenOrientation="landscape" android:theme="@style/NoTitle_FullScreen" />
+        <activity android:name="BigClock" 
+                  android:screenOrientation="landscape" 
+                  android:theme="@style/NoTitle_FullScreen" 
+                  />
 
         <activity android:name="AlarmAlert" android:label="@string/alert_title"
                 android:excludeFromRecents="true"
