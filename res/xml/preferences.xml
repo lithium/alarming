@@ -5,6 +5,10 @@
                           android:summary="@string/show_clock_summary"
                           android:defaultValue="true"
                           android:title="@string/show_clock" />
+      <CheckBoxPreference android:key="captcha_on_dismiss" 
+                          android:title="@string/captcha_title" 
+                          android:summary="@string/captcha_summary"
+                          android:defaultValue="false"/>
   </PreferenceCategory>
 
   <PreferenceScreen android:title="@string/bigclock_prefs" 
@@ -24,7 +28,9 @@
    </PreferenceScreen>
 
   <PreferenceCategory android:title="@string/alarm_defaults">
-      <PreferenceScreen android:title="@string/alarm_defaults">
+      <PreferenceScreen android:title="@string/alarm_defaults"
+                        android:summary="@string/alarm_defaults_summary"
+      >
         <PreferenceCategory android:title="@string/alarm_defaults">
         <com.hlidskialf.android.alarmclock.AlarmPreference android:key="default_alarm" 
             android:title="@string/alert"

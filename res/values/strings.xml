@@ -27,6 +27,13 @@
 
     <string name="alarm_list_empty">No alarms set.\n\nAdd alarms from menu.</string>
 
+    <string name="snooze_dismissed">Snoozed alarm dismissed.</string>
+    <string name="snooze_message_text">Snoozing until %s</string>
+
+    <string name="captcha_title">Captcha on Dismiss</string>
+    <string name="captcha_summary">Alarm dismiss requires input</string>
+    <string name="captcha_message">Tap the yellow dots to dismiss</string>
+
     <string name="about">About</string>
     <string name="about_title">About Alarming!</string>
     <string name="about_ok">Ok</string>
@@ -38,6 +45,7 @@
     </string>
 
     <string name="alarm_defaults">Alarm Defaults</string>
+    <string name="alarm_defaults_summary">Default values for new alarms</string>
 
     <!-- Menu item on Alarm Clock screen: Add alarm -->
     <string name="add_alarm">Add alarm</string>
@@ -52,7 +60,7 @@
     <string name="fire_alarm">Preview alarm</string>
 
     <!-- Menu item on Alarm Clock screen: Show clock -->
-    <string name="show_clock">Show clock</string>
+    <string name="show_clock">Show Clock</string>
     <string name="show_clock_summary">Show clock on alarm list screen</string>
 
     <string name="bigclock">Bed Clock</string>

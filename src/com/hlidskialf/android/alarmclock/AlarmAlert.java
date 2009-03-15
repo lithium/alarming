@@ -16,11 +16,14 @@
 
 package com.hlidskialf.android.alarmclock;
 
+import  com.hlidskialf.android.captcha.CaptchaDialog;
+
 import android.app.Activity;
 import android.app.KeyguardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.DialogInterface;
 import android.graphics.PixelFormat;
 import android.os.Bundle;
 import android.view.View;
@@ -30,6 +33,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.Toast;
 import android.widget.TextView;
+
 
 import java.util.Calendar;
 
@@ -45,6 +49,7 @@ public class AlarmAlert extends Activity {
     private KeyguardManager.KeyguardLock mKeyguardLock = null;
     private Button mSnoozeButton;
     private boolean mSnoozed;
+    private boolean mDoCaptcha;
 
     private AlarmKlaxon mKlaxon;
     private int mAlarmId;
@@ -88,6 +93,9 @@ public class AlarmAlert extends Activity {
         if (clockLayout instanceof DigitalClock) {
             ((DigitalClock)clockLayout).setAnimate();
         }
+
+
+        mDoCaptcha = settings.getBoolean("captcha_on_dismiss", false);
 
         TextView nameText = (TextView)findViewById(R.id.alert_name);
         String n = mKlaxon.getName();
@@ -144,9 +152,22 @@ public class AlarmAlert extends Activity {
         /* dismiss button: close notification */
         findViewById(R.id.dismiss).setOnClickListener(new Button.OnClickListener() {
                 public void onClick(View v) {
-                    mKlaxon.stop(AlarmAlert.this, mSnoozed);
-                    releaseLocks();
-                    finish();
+                    if (!mDoCaptcha) {
+                        mKlaxon.stop(AlarmAlert.this, mSnoozed);
+                        releaseLocks();
+                        AlarmAlert.this.finish();
+                        return;
+                    }
+
+                    CaptchaDialog d = new CaptchaDialog(AlarmAlert.this, getString(R.string.captcha_message), 0, 3, false);
+                    d.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                      public void onDismiss(DialogInterface dialog) {
+                        mKlaxon.stop(AlarmAlert.this, mSnoozed);
+                        releaseLocks();
+                        AlarmAlert.this.finish();
+                      }
+                    });
+                    d.show();
                 }
             });
 

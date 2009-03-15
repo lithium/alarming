@@ -21,6 +21,22 @@
     android:layout_marginTop="6dip"
     android:orientation="vertical"> 
 
+    <LinearLayout android:id="@+id/snooze_message"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        >
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/stat_notify_alarm"/>
+        <TextView android:id="@+id/snooze_message_text" 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+        />
+    </LinearLayout>
+
+
     <LinearLayout
         android:id="@+id/clock_layout"
         android:layout_width="fill_parent"

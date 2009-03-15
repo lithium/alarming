@@ -16,6 +16,8 @@
 
 package com.hlidskialf.android.alarmclock;
 
+import com.hlidskialf.android.captcha.CaptchaDialog;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -39,8 +41,10 @@ import android.widget.CursorAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.CheckBox;
+import android.widget.Toast;
 
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 
 
@@ -115,6 +119,8 @@ public class AlarmClock extends Activity {
             final boolean enabled = cursor.getInt(Alarms.AlarmColumns.ALARM_ENABLED_INDEX) == 1;
             final String name = cursor.getString(Alarms.AlarmColumns.ALARM_NAME_INDEX);
 
+
+
             CheckBox onButton = (CheckBox)view.findViewById(R.id.alarmButton);
             onButton.setChecked(enabled);
             onButton.setOnClickListener(new OnClickListener() {
@@ -158,6 +164,7 @@ public class AlarmClock extends Activity {
 
             TextView alarmName = (TextView)digitalClock.findViewById(R.id.alarmName);
             alarmName.setText(name);
+
 
             // Build context menu
             digitalClock.setOnCreateContextMenuListener(new View.OnCreateContextMenuListener() {
@@ -267,6 +274,38 @@ public class AlarmClock extends Activity {
             else
                 mFace = face;
             inflateClock();
+        }
+
+        final boolean captcha = mPrefs.getBoolean("captcha_on_dismiss", false);
+        long next_snooze = mPrefs.getLong(Alarms.PREF_SNOOZE_TIME, 0);
+        final int next_snooze_id = mPrefs.getInt(Alarms.PREF_SNOOZE_ID, 0);
+        final View v = (View)findViewById(R.id.snooze_message);
+        if (next_snooze != 0) {
+            v.setVisibility(View.VISIBLE);
+            v.setOnClickListener(new View.OnClickListener() { 
+              public void onClick(View clicked) {
+                final CaptchaDialog d = new CaptchaDialog(AlarmClock.this, getString(R.string.captcha_message), 0, 3, true);
+                d.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                  public void onDismiss(DialogInterface dia) {
+                    if (!d.isComplete()) return;
+                    Alarms.disableAlert(AlarmClock.this,next_snooze_id);
+                    v.setVisibility(View.GONE);
+                    mPrefs.edit().putLong(Alarms.PREF_SNOOZE_TIME,0).commit();
+                    Toast.makeText(AlarmClock.this, getString(R.string.snooze_dismissed), Toast.LENGTH_LONG).show();
+                  }
+                });
+                d.show();
+                
+              }
+            });
+            TextView tv = (TextView)v.findViewById(R.id.snooze_message_text);
+            Calendar c = new GregorianCalendar();
+            c.setTimeInMillis(next_snooze);
+            String snooze_time = Alarms.formatTime(AlarmClock.this, c);
+            tv.setText(getString(R.string.snooze_message_text, snooze_time));
+        }
+        else {
+            v.setVisibility(View.GONE);
         }
     }
 
