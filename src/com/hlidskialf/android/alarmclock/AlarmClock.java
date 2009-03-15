@@ -305,7 +305,8 @@ public class AlarmClock extends Activity {
             tv.setText(getString(R.string.snooze_message_text, snooze_time));
         }
         else {
-            v.setVisibility(View.GONE);
+            if (v != null)
+                v.setVisibility(View.GONE);
         }
     }
 

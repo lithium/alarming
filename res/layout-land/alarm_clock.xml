@@ -29,6 +29,23 @@
         android:visibility="gone"
         android:text="@string/alarm_list_empty"
         android:textSize="10pt" />
+    
+    <LinearLayout android:id="@+id/snooze_message"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        >
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/stat_notify_alarm"/>
+        <TextView android:id="@+id/snooze_message_text" 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+        />
+    </LinearLayout>
+
+
 
     <LinearLayout 
         android:layout_width="fill_parent"
