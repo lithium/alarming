@@ -1,18 +1,21 @@
-The Alarm Clock also featuring
+The Android Alarm Clock, plus
+
+v1.2
+ Captcha on dismiss
+ Dismiss snooze
 
 v1.1
-  Alarm defaults 
-  Preview alarm
-  Bed clock (long-click for large dim clock; wont sleep if charging)
+ Alarm defaults 
+ Preview alarm
+ Bed clock (won't sleep if charging)
 
 v1.0
-  Name alarm
-  Alarm volume
-  Increase volume
-  Pause between rings
-  Disable/set snooze
-  Disable/set silence
+ Name alarm
+ Alarm volume
+ Increase volume
+ Pause between rings
+ Disable/set snooze
+ Set silence timeout
 
 Use the always free Tone Picker to use MP3s
-
 Source code available
