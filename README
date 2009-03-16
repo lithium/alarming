@@ -3,17 +3,17 @@ The Android Alarm Clock, plus
 v1.2
  Captcha on dismiss
  Dismiss snooze
+ Bed clock animations
 
 v1.1
  Alarm defaults 
  Preview alarm
- Bed clock (won't sleep if charging)
+ Bed clock (stays on when charging)
 
 v1.0
  Name alarm
  Alarm volume
  Increase volume
- Pause between rings
  Disable/set snooze
  Set silence timeout
 
