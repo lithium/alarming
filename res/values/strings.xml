@@ -20,7 +20,7 @@
     <string name="app_label">Alarming!</string>
 
     <string name="app_description">Alarming! - AlarmClock enhanced</string>
-    <string name="app_version">1.2.2</string>
+    <string name="app_version">1.2.3</string>
     <string name="app_preferences">Alarming! Preferences</string>
 	
     <string name="preferences">Preferences</string>
@@ -29,6 +29,7 @@
 
     <string name="snooze_dismissed">Snoozed alarm dismissed.</string>
     <string name="snooze_message_text">Snoozing until %s</string>
+    
 
     <string name="captcha_title">Captcha on Dismiss</string>
     <string name="captcha_summary">Alarm dismiss requires input</string>
@@ -71,6 +72,7 @@
     <string name="bigclock_wake_lock">Bed clock never sleeps</string>
     <string name="bigclock_wake_lock_summary">Bed clock disables standby if charging</string>
     <string name="flip_orientation">Change Orientation</string>
+    <string name="next_animation">Next animation</string>
 
     <string name="alarm_settings">Alarm Settings</string>
     <string name="alarm_alert_settings">Ringtone Settings</string>

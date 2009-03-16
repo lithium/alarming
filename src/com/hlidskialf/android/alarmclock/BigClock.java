@@ -1,5 +1,6 @@
 package com.hlidskialf.android.alarmclock;
 
+import com.hlidskialf.android.text.format.DateFormat;
 
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,7 +17,9 @@ import android.widget.TextView;
 import android.widget.ViewSwitcher;
 import android.app.Activity;
 import android.view.LayoutInflater;
+import android.view.animation.Animation;
 import java.util.Calendar;
+import java.util.ArrayList;
 import java.util.Date;
 import android.view.KeyEvent;
 import android.content.pm.ActivityInfo;
@@ -34,12 +37,28 @@ public class BigClock extends Activity  implements View.OnClickListener, ViewSwi
 {
   private static final int MENUITEM_FLIP=1;
   private static final int MENUITEM_CLOSE=2;
+  private static final int MENUITEM_ANIM=3;
 
-  private TextSwitcher mSwitcher;
+  private static final int ANIMATION_FADE=0;
+  private static final int ANIMATION_PUSHUP=1;
+  private static final int ANIMATION_PUSHLEFT=2;
+  private static final int ANIMATION_PUSHDOWN=3;
+  private static final int ANIMATION_PUSHRIGHT=4;
+  private static final int ANIMATION_EXPLODE=5;
+  private static final int ANIMATION_SHATTER=6;
+  private static final int ANIMATION_HYPER=7;
+
+  private TextSwitcher mSwitchHour,mSwitchMin,mSwitchSec;
+  private String mHour,mMin,mSec;
+  private ArrayList<int[]> mAnimations;
+  private int mAnim;
+
   private Calendar mCal;
   private Handler mHandler;
   private Runnable mCallback;
   private LayoutInflater mInflater;
+
+
 
   private int mOrient;
   private boolean mDoWakeLock;
@@ -59,15 +78,29 @@ public class BigClock extends Activity  implements View.OnClickListener, ViewSwi
 
     setContentView(R.layout.bigclock);
 
-    mSwitcher = (TextSwitcher)findViewById(R.id.bigclock_time);
-    mSwitcher.setFactory(this);
-    mSwitcher.setInAnimation( AnimationUtils.loadAnimation(this, android.R.anim.fade_in) );
-    mSwitcher.setOutAnimation( AnimationUtils.loadAnimation(this, android.R.anim.fade_out) );
-    //mSwitcher.setInAnimation( AnimationUtils.loadAnimation(this, android.R.anim.slide_in_left) );
-    //mSwitcher.setOutAnimation( AnimationUtils.loadAnimation(this, android.R.anim.slide_out_right) );
-    mSwitcher.setOnClickListener(this);
+    mSwitchHour = (TextSwitcher)findViewById(R.id.bigclock_time_hour);
+    mSwitchHour.setFactory(this);
+    mSwitchHour.setOnClickListener(this);
+    mSwitchMin = (TextSwitcher)findViewById(R.id.bigclock_time_min);
+    mSwitchMin.setFactory(this);
+    mSwitchMin.setOnClickListener(this);
+    mSwitchSec = (TextSwitcher)findViewById(R.id.bigclock_time_sec);
+    mSwitchSec.setFactory(this);
+    mSwitchSec.setOnClickListener(this);
 
+    mAnimations = new ArrayList<int[]>();
+    mAnimations.add(ANIMATION_FADE,     new int[] {R.anim.slow_fade_in, R.anim.slow_fade_out});
+    mAnimations.add(ANIMATION_PUSHUP,   new int[] {R.anim.push_up_in, R.anim.push_up_out});
+    mAnimations.add(ANIMATION_PUSHLEFT, new int[] {R.anim.push_left_in, R.anim.push_left_out});
+    mAnimations.add(ANIMATION_PUSHDOWN, new int[] {R.anim.push_down_in, R.anim.push_down_out});
+    mAnimations.add(ANIMATION_PUSHRIGHT,new int[] {R.anim.push_right_in, R.anim.push_right_out});
+    mAnimations.add(ANIMATION_EXPLODE,  new int[] {R.anim.slow_fade_in, R.anim.wave_scale});
+    mAnimations.add(ANIMATION_SHATTER,  new int[] {R.anim.shake, R.anim.push_down_out});
+    mAnimations.add(ANIMATION_HYPER,    new int[] {R.anim.hyperspace_in, R.anim.hyperspace_out});
+    
     mPrefs = getSharedPreferences(AlarmClock.PREFERENCES, 0);
+
+    setAnimation( mPrefs.getInt("bigclock_animation", ANIMATION_FADE) );
 
     mOrient = mPrefs.getInt("bigclock_orientation", ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
     setRequestedOrientation(mOrient);
@@ -128,11 +161,42 @@ public class BigClock extends Activity  implements View.OnClickListener, ViewSwi
     cleanup();
     super.onPause();
   }
+  public void setAnimation(int anim)
+  {
+    mAnim = anim;
+
+    mPrefs.edit().putInt("bigclock_animation",mAnim).commit();
+    int[] anim_ids = mAnimations.get(anim);
+
+    Animation in_anim = AnimationUtils.loadAnimation(this, anim_ids[0]);
+    Animation out_anim = AnimationUtils.loadAnimation(this, anim_ids[1]);
+
+    mSwitchHour.setInAnimation( in_anim );
+    mSwitchHour.setOutAnimation( out_anim );
+    mSwitchMin.setInAnimation( in_anim );
+    mSwitchMin.setOutAnimation( out_anim );
+    mSwitchSec.setInAnimation( in_anim );
+    mSwitchSec.setOutAnimation( out_anim );
+  }
   public void updateClock()
   {
+    boolean is24 = Alarms.get24HourMode(this);
     mCal.setTime(new Date());
-    String time = Alarms.formatTimeWithSeconds(this, mCal);
-    mSwitcher.setText(time == null ? "null" : time);
+
+
+    String s;
+    s = DateFormat.format(is24 ? "k:" : "h:",mCal);
+    if (!s.equals(mHour)) {
+        mSwitchHour.setText(mHour = s);
+    }
+    s = DateFormat.format(mOrient == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE ? "mm:" : "mm", mCal);
+    if (!s.equals(mMin)) {
+        mSwitchMin.setText(mMin = s);
+    }
+    s = DateFormat.format("ss",mCal);
+    if (!s.equals(mSec)) {
+        mSwitchSec.setText(mSec = s);
+    }
   }
 
   public View makeView() {
@@ -144,7 +208,10 @@ public class BigClock extends Activity  implements View.OnClickListener, ViewSwi
   @Override
   public boolean onCreateOptionsMenu(Menu menu) {
     super.onCreateOptionsMenu(menu);
-    MenuItem mi = menu.add(0,MENUITEM_FLIP,0, R.string.flip_orientation);
+    MenuItem mi;
+    mi = menu.add(0,MENUITEM_ANIM,0, R.string.next_animation);
+    mi.setIcon(android.R.drawable.ic_menu_rotate);
+    mi = menu.add(0,MENUITEM_FLIP,0, R.string.flip_orientation);
     mi.setIcon(android.R.drawable.ic_menu_always_landscape_portrait);
     mi = menu.add(0,MENUITEM_CLOSE,0, R.string.hide_clock);
     mi.setIcon(android.R.drawable.ic_menu_close_clear_cancel);
@@ -168,6 +235,9 @@ public class BigClock extends Activity  implements View.OnClickListener, ViewSwi
       cleanup();
       finish();
       return true;
+    case MENUITEM_ANIM:
+      setAnimation(mAnim+1 >= mAnimations.size() ? 0 : mAnim+1);
+      return true;
     }
     return false;
   }
@@ -177,11 +247,9 @@ public class BigClock extends Activity  implements View.OnClickListener, ViewSwi
     if (keyCode == KeyEvent.KEYCODE_MENU) {
       return super.onKeyDown(keyCode,event);
     }
-
     
     cleanup();
     finish(); 
-
     return true; 
   }
 
