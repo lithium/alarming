@@ -155,6 +155,7 @@ public class AlarmAlert extends Activity {
                     if (!mDoCaptcha) {
                         mKlaxon.stop(AlarmAlert.this, mSnoozed);
                         releaseLocks();
+                        Alarms.setNextAlert(AlarmAlert.this);
                         AlarmAlert.this.finish();
                         return;
                     }
@@ -164,6 +165,7 @@ public class AlarmAlert extends Activity {
                       public void onDismiss(DialogInterface dialog) {
                         mKlaxon.stop(AlarmAlert.this, mSnoozed);
                         releaseLocks();
+                        Alarms.setNextAlert(AlarmAlert.this);
                         AlarmAlert.this.finish();
                       }
                     });

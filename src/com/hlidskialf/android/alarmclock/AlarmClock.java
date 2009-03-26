@@ -292,6 +292,7 @@ public class AlarmClock extends Activity {
                     v.setVisibility(View.GONE);
                     mPrefs.edit().putLong(Alarms.PREF_SNOOZE_TIME,0).commit();
                     Toast.makeText(AlarmClock.this, getString(R.string.snooze_dismissed), Toast.LENGTH_LONG).show();
+                    Alarms.setNextAlert(AlarmClock.this);
                   }
                 });
                 d.show();
