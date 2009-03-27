@@ -16,7 +16,7 @@ import android.provider.Settings;
 
 public class AlarmClockPreferences extends PreferenceActivity
 {
-    private CheckBoxPreference mShowClockPref,mBigClockPref,mBigClockSleepPref,mCaptchaPref;
+    private CheckBoxPreference mShowClockPref,mBigClockPref,mBigClockSleepPref,mCaptchaDismissPref,mCaptchaSnoozePref;
     private AlarmPreference mAlarmPref;
     private RepeatPreference mRepeatPref;
     private SliderPreference mVolumePref;
@@ -42,7 +42,8 @@ public class AlarmClockPreferences extends PreferenceActivity
         mSharedPrefs = getSharedPreferences(AlarmClock.PREFERENCES, 0);
         
         mShowClockPref = (CheckBoxPreference) findPreference("show_clock");
-        mCaptchaPref = (CheckBoxPreference) findPreference("captcha_on_dismiss");
+        mCaptchaDismissPref = (CheckBoxPreference) findPreference("captcha_on_dismiss");
+        mCaptchaSnoozePref = (CheckBoxPreference) findPreference("captcha_on_snooze");
         mBigClockPref = (CheckBoxPreference) findPreference("bigclock_enable");
         mBigClockSleepPref = (CheckBoxPreference) findPreference("bigclock_wake_lock");
 
@@ -61,9 +62,15 @@ public class AlarmClockPreferences extends PreferenceActivity
                 return true;
             }
         });
-        mCaptchaPref.setOnPreferenceChangeListener( new Preference.OnPreferenceChangeListener() {
+        mCaptchaDismissPref.setOnPreferenceChangeListener( new Preference.OnPreferenceChangeListener() {
             public boolean onPreferenceChange(Preference pref, Object newValue) {
                 mSharedPrefs.edit().putBoolean("captcha_on_dismiss", (Boolean)newValue).commit();
+                return true;
+            }
+        });
+        mCaptchaSnoozePref.setOnPreferenceChangeListener( new Preference.OnPreferenceChangeListener() {
+            public boolean onPreferenceChange(Preference pref, Object newValue) {
+                mSharedPrefs.edit().putBoolean("captcha_on_snooze", (Boolean)newValue).commit();
                 return true;
             }
         });

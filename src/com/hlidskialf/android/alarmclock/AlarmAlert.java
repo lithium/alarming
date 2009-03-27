@@ -49,7 +49,7 @@ public class AlarmAlert extends Activity {
     private KeyguardManager.KeyguardLock mKeyguardLock = null;
     private Button mSnoozeButton;
     private boolean mSnoozed;
-    private boolean mDoCaptcha;
+    private boolean mCaptchaDismiss,mCaptchaSnooze;
 
     private AlarmKlaxon mKlaxon;
     private int mAlarmId;
@@ -95,7 +95,8 @@ public class AlarmAlert extends Activity {
         }
 
 
-        mDoCaptcha = settings.getBoolean("captcha_on_dismiss", false);
+        mCaptchaDismiss = settings.getBoolean("captcha_on_dismiss", false);
+        mCaptchaSnooze = settings.getBoolean("captcha_on_snooze", false);
 
         TextView nameText = (TextView)findViewById(R.id.alert_name);
         String n = mKlaxon.getName();
@@ -132,19 +133,40 @@ public class AlarmAlert extends Activity {
                                      getString(R.string.alarm_alert_snooze_not_set,
                                                Alarms.formatTime(AlarmAlert.this, c)),
                                      Toast.LENGTH_LONG).show();
+                      mKlaxon.stop(AlarmAlert.this, mSnoozed);
+                      releaseLocks();
+                      finish();
                   } else {
-                      Toast.makeText(AlarmAlert.this,
-                                     getString(R.string.alarm_alert_snooze_set,
-                                               mKlaxon.getSnooze()),
-                                     Toast.LENGTH_LONG).show();
+                      if (!mCaptchaSnooze) {
+                        Toast.makeText(AlarmAlert.this,
+                                       getString(R.string.alarm_alert_snooze_set, mKlaxon.getSnooze()),
+                                       Toast.LENGTH_LONG).show();
+                        Alarms.saveSnoozeAlert(AlarmAlert.this, mAlarmId, snoozeTarget);
+                        Alarms.setNextAlert(AlarmAlert.this);
+                        mSnoozed = true;
+                        mKlaxon.stop(AlarmAlert.this, mSnoozed);
+                        releaseLocks();
+                        finish();
+                      }
+                      else {
+                        CaptchaDialog d = new CaptchaDialog(AlarmAlert.this, getString(R.string.captcha_message), 0, 3, false);
+                        d.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                          public void onDismiss(DialogInterface dialog) {
+                            Toast.makeText(AlarmAlert.this,
+                                           getString(R.string.alarm_alert_snooze_set, mKlaxon.getSnooze()),
+                                           Toast.LENGTH_LONG).show();
+                            Alarms.saveSnoozeAlert(AlarmAlert.this, mAlarmId, snoozeTarget);
+                            Alarms.setNextAlert(AlarmAlert.this);
+                            mSnoozed = true;
+                            mKlaxon.stop(AlarmAlert.this, mSnoozed);
+                            releaseLocks();
+                            finish();
+                          }
+                        });
+                        d.show();
+                      }
 
-                      Alarms.saveSnoozeAlert(AlarmAlert.this, mAlarmId, snoozeTarget);
-                      Alarms.setNextAlert(AlarmAlert.this);
-                      mSnoozed = true;
                   }
-                  mKlaxon.stop(AlarmAlert.this, mSnoozed);
-                  releaseLocks();
-                  finish();
               }
           });
         }
@@ -152,7 +174,7 @@ public class AlarmAlert extends Activity {
         /* dismiss button: close notification */
         findViewById(R.id.dismiss).setOnClickListener(new Button.OnClickListener() {
                 public void onClick(View v) {
-                    if (!mDoCaptcha) {
+                    if (!mCaptchaDismiss) {
                         mKlaxon.stop(AlarmAlert.this, mSnoozed);
                         releaseLocks();
                         Alarms.setNextAlert(AlarmAlert.this);

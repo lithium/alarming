@@ -276,26 +276,32 @@ public class AlarmClock extends Activity {
             inflateClock();
         }
 
-        final boolean captcha = mPrefs.getBoolean("captcha_on_dismiss", false);
+        final boolean do_captcha = mPrefs.getBoolean("captcha_on_dismiss", false);
         long next_snooze = mPrefs.getLong(Alarms.PREF_SNOOZE_TIME, 0);
-        final int next_snooze_id = mPrefs.getInt(Alarms.PREF_SNOOZE_ID, 0);
         final View v = (View)findViewById(R.id.snooze_message);
         if (next_snooze != 0) {
             v.setVisibility(View.VISIBLE);
             v.setOnClickListener(new View.OnClickListener() { 
               public void onClick(View clicked) {
-                final CaptchaDialog d = new CaptchaDialog(AlarmClock.this, getString(R.string.captcha_message), 0, 3, true);
-                d.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                  public void onDismiss(DialogInterface dia) {
-                    if (!d.isComplete()) return;
-                    Alarms.disableAlert(AlarmClock.this,next_snooze_id);
-                    v.setVisibility(View.GONE);
-                    mPrefs.edit().putLong(Alarms.PREF_SNOOZE_TIME,0).commit();
-                    Toast.makeText(AlarmClock.this, getString(R.string.snooze_dismissed), Toast.LENGTH_LONG).show();
-                    Alarms.setNextAlert(AlarmClock.this);
-                  }
-                });
-                d.show();
+                if (do_captcha) {
+                  final CaptchaDialog d = new CaptchaDialog(AlarmClock.this, getString(R.string.captcha_message), 0, 3, true);
+                  d.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    public void onDismiss(DialogInterface dia) {
+                      if (!d.isComplete()) return;
+                      v.setVisibility(View.GONE);
+                      Alarms.disableSnoozeAlert(AlarmClock.this);
+                      Toast.makeText(AlarmClock.this, getString(R.string.snooze_dismissed), Toast.LENGTH_LONG).show();
+                      Alarms.setNextAlert(AlarmClock.this);
+                    }
+                  });
+                  d.show();
+                }
+                else {
+                  v.setVisibility(View.GONE);
+                  Alarms.disableSnoozeAlert(AlarmClock.this);
+                  Toast.makeText(AlarmClock.this, getString(R.string.snooze_dismissed), Toast.LENGTH_LONG).show();
+                  Alarms.setNextAlert(AlarmClock.this);
+                }
                 
               }
             });

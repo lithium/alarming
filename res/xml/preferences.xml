@@ -6,8 +6,12 @@
                           android:defaultValue="true"
                           android:title="@string/show_clock" />
       <CheckBoxPreference android:key="captcha_on_dismiss" 
-                          android:title="@string/captcha_title" 
-                          android:summary="@string/captcha_summary"
+                          android:title="@string/captcha_dismiss_title" 
+                          android:summary="@string/captcha_dismiss_summary"
+                          android:defaultValue="false"/>
+      <CheckBoxPreference android:key="captcha_on_snooze" 
+                          android:title="@string/captcha_snooze_title" 
+                          android:summary="@string/captcha_snooze_summary"
                           android:defaultValue="false"/>
   </PreferenceCategory>
 

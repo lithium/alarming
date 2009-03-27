@@ -20,7 +20,7 @@
     <string name="app_label">Alarming!</string>
 
     <string name="app_description">Alarming! - AlarmClock enhanced</string>
-    <string name="app_version">1.2.4</string>
+    <string name="app_version">1.2.5</string>
     <string name="app_preferences">Alarming! Preferences</string>
 	
     <string name="preferences">Preferences</string>
@@ -31,8 +31,10 @@
     <string name="snooze_message_text">Snoozing until %s</string>
     
 
-    <string name="captcha_title">Captcha on Dismiss</string>
-    <string name="captcha_summary">Alarm dismiss requires input</string>
+    <string name="captcha_dismiss_title">Captcha on Dismiss</string>
+    <string name="captcha_dismiss_summary">Alarm dismiss requires input</string>
+    <string name="captcha_snooze_title">Captcha on Snooze</string>
+    <string name="captcha_snooze_summary">Snoozing alarm requires input</string>
     <string name="captcha_message">Tap the yellow dots to dismiss</string>
 
     <string name="about">About</string>
