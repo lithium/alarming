@@ -42,6 +42,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.CheckBox;
 import android.widget.Toast;
+import android.widget.SeekBar;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -81,6 +82,7 @@ public class AlarmClock extends Activity {
     private ListView mAlarmsList;
     private Cursor mCursor;
 
+    private boolean mCaptchaDismiss;
     /**
      * Which clock face to show
      */
@@ -258,6 +260,51 @@ public class AlarmClock extends Activity {
 
 
         setClockVisibility(mPrefs.getBoolean(PREF_SHOW_CLOCK, true));
+
+        mCaptchaDismiss = mPrefs.getBoolean("captcha_on_dismiss", false);
+
+
+        updateQuickAlarmVisibility();
+    }
+    public void quick_alarm_dialog()
+    {
+      ViewGroup layout = (ViewGroup)mFactory.inflate(R.layout.slider_dialog, null);
+      final TextView text_value = (TextView)layout.findViewById(R.id.slider_text);
+      final SeekBar slider = (SeekBar)layout.findViewById(R.id.slider_seekbar);
+      slider.setMax(59);
+      text_value.setText("1 minutes"); 
+      slider.setOnSeekBarChangeListener( new SeekBar.OnSeekBarChangeListener() {
+        public void onProgressChanged(SeekBar seek, int value, boolean fromTouch) {
+          text_value.setText(String.valueOf( value+1 )+" minutes"); 
+        }
+        public void onStartTrackingTouch(SeekBar seek) {}
+        public void onStopTrackingTouch(SeekBar seek) {}
+      });
+      AlertDialog d = new AlertDialog.Builder(this)
+        .setTitle(R.string.quick_alarm)
+        .setView(layout)
+        .setNegativeButton(R.string.cancel, null)
+        .setPositiveButton(R.string.about_ok, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+              int snooze_min = 1 + slider.getProgress();
+              final long snoozeTarget = System.currentTimeMillis() + 1000 * 60 * snooze_min;
+              long nextAlarm = Alarms.calculateNextAlert(AlarmClock.this).getAlert();
+              if (nextAlarm < snoozeTarget) {
+                // alarm set to trigger before your snooze...
+              } 
+              else {
+                Alarms.saveSnoozeAlert(AlarmClock.this, 0, snoozeTarget);
+                Alarms.setNextAlert(AlarmClock.this);
+                Toast.makeText(AlarmClock.this,
+                               getString(R.string.alarm_alert_snooze_set, snooze_min),
+                               Toast.LENGTH_LONG).show();
+
+                updateSnoozeVisibility();
+              }
+            }
+        })
+        .create();
+      d.show();
     }
 
     @Override
@@ -276,44 +323,25 @@ public class AlarmClock extends Activity {
             inflateClock();
         }
 
-        final boolean do_captcha = mPrefs.getBoolean("captcha_on_dismiss", false);
+        
+        updateSnoozeVisibility();
+    }
+    private void updateSnoozeVisibility()
+    {
         long next_snooze = mPrefs.getLong(Alarms.PREF_SNOOZE_TIME, 0);
-        final View v = (View)findViewById(R.id.snooze_message);
+        View v = (View)findViewById(R.id.snooze_message);
         if (next_snooze != 0) {
-            v.setVisibility(View.VISIBLE);
-            v.setOnClickListener(new View.OnClickListener() { 
-              public void onClick(View clicked) {
-                if (do_captcha) {
-                  final CaptchaDialog d = new CaptchaDialog(AlarmClock.this, getString(R.string.captcha_message), 0, 3, true);
-                  d.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                    public void onDismiss(DialogInterface dia) {
-                      if (!d.isComplete()) return;
-                      v.setVisibility(View.GONE);
-                      Alarms.disableSnoozeAlert(AlarmClock.this);
-                      Toast.makeText(AlarmClock.this, getString(R.string.snooze_dismissed), Toast.LENGTH_LONG).show();
-                      Alarms.setNextAlert(AlarmClock.this);
-                    }
-                  });
-                  d.show();
-                }
-                else {
-                  v.setVisibility(View.GONE);
-                  Alarms.disableSnoozeAlert(AlarmClock.this);
-                  Toast.makeText(AlarmClock.this, getString(R.string.snooze_dismissed), Toast.LENGTH_LONG).show();
-                  Alarms.setNextAlert(AlarmClock.this);
-                }
-                
-              }
-            });
             TextView tv = (TextView)v.findViewById(R.id.snooze_message_text);
             Calendar c = new GregorianCalendar();
             c.setTimeInMillis(next_snooze);
             String snooze_time = Alarms.formatTime(AlarmClock.this, c);
             tv.setText(getString(R.string.snooze_message_text, snooze_time));
+
+            v.setOnClickListener(dismiss_snooze_listener);
+            v.setVisibility(View.VISIBLE);
         }
         else {
-            if (v != null)
-                v.setVisibility(View.GONE);
+            v.setVisibility(View.GONE);
         }
     }
 
@@ -399,14 +427,18 @@ public class AlarmClock extends Activity {
             Intent intent = new Intent(AlarmClock.this, AlarmClockPreferences.class)
                                   .setAction(Intent.ACTION_MAIN)
                                   .addCategory(Intent.CATEGORY_PREFERENCE);
-            startActivity(intent); 
+            startActivityForResult(intent, SET_PREFERENCES); 
             return true;
         }
 
 
         return false;
     }
-
+    @Override
+    public void onActivityResult (int requestCode, int resultCode, Intent data)
+    {
+      updateQuickAlarmVisibility();
+    }
 
     private boolean getClockVisibility() {
         return mClockLayout.getVisibility() == View.VISIBLE;
@@ -424,4 +456,44 @@ public class AlarmClock extends Activity {
         if (v != null) 
           v.setVisibility(count < 1 ? View.VISIBLE : View.GONE);
     }
+    private void updateQuickAlarmVisibility() {
+      boolean visible = mPrefs.getBoolean("quickalarm_enable", true); 
+
+      View quick_alarm = findViewById(R.id.quick_alarm);
+      if (quick_alarm != null) {
+        quick_alarm.setVisibility(visible ? View.VISIBLE : View.GONE);
+        if (visible)
+          quick_alarm.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+              quick_alarm_dialog();
+            }
+          });
+      }
+    }
+
+    private View.OnClickListener dismiss_snooze_listener = new View.OnClickListener() { 
+      public void onClick(View clicked) {
+        final View v = clicked;
+        if (mCaptchaDismiss) {
+          final CaptchaDialog d = new CaptchaDialog(AlarmClock.this, getString(R.string.captcha_message), 0, 3, true);
+          d.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            public void onDismiss(DialogInterface dia) {
+              if (!d.isComplete()) return;
+              v.setVisibility(View.GONE);
+              Alarms.disableSnoozeAlert(AlarmClock.this);
+              Toast.makeText(AlarmClock.this, getString(R.string.snooze_dismissed), Toast.LENGTH_LONG).show();
+              Alarms.setNextAlert(AlarmClock.this);
+            }
+          });
+          d.show();
+        }
+        else {
+          clicked.setVisibility(View.GONE);
+          Alarms.disableSnoozeAlert(AlarmClock.this);
+          Toast.makeText(AlarmClock.this, getString(R.string.snooze_dismissed), Toast.LENGTH_LONG).show();
+          Alarms.setNextAlert(AlarmClock.this);
+        }
+        
+      }
+  };
 }

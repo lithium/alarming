@@ -21,15 +21,7 @@
     android:gravity="center_vertical"
     android:orientation="vertical"
     >
-    <TextView
-        android:id="@+id/alarms_list_empty"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:visibility="gone"
-        android:text="@string/alarm_list_empty"
-        android:textSize="10pt" />
-    
+
     <LinearLayout android:id="@+id/snooze_message"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -45,6 +37,39 @@
         />
     </LinearLayout>
 
+
+    <TextView
+        android:id="@+id/alarms_list_empty"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:visibility="gone"
+        android:text="@string/alarm_list_empty"
+        android:textSize="10pt" 
+        />
+    
+
+
+    <LinearLayout android:id="@+id/quick_alarm"
+      android:orientation="horizontal"
+      android:layout_height="wrap_content"
+      android:layout_width="wrap_content"
+      android:layout_gravity="center"
+      >
+      <ImageView 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/quick_alarm"
+        />
+      <TextView 
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:textSize="24px"
+        android:textColor="#e95000"
+        android:text="@string/quick_alarm"
+        android:gravity="left|center_vertical"
+        />
+    </LinearLayout>
 
 
     <LinearLayout 
@@ -65,6 +90,5 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content" />
     </LinearLayout>
-
 
 </LinearLayout>

@@ -24,11 +24,12 @@
     <string name="app_preferences">Alarming! Preferences</string>
 	
     <string name="preferences">Preferences</string>
+    
+    <string name="alarm_list_empty">No alarms set.</string>
 
-    <string name="alarm_list_empty">No alarms set.\n\nAdd alarms from menu.</string>
-
-    <string name="snooze_dismissed">Snoozed alarm dismissed.</string>
+    <string name="snooze_dismissed">Snooze dismissed.</string>
     <string name="snooze_message_text">Snoozing until %s</string>
+    <string name="quick_alarm">Quick Snooze</string>
     
 
     <string name="captcha_dismiss_title">Captcha on Dismiss</string>
@@ -40,6 +41,7 @@
     <string name="about">About</string>
     <string name="about_title">About Alarming!</string>
     <string name="about_ok">Ok</string>
+    <string name="cancel">Cancel</string>
     <string name="about_text"><b>Original source</b>\n<u>http://source.android.com</u>\n\n
     <b>Source code available</b>\n<u>http://github.com/lithium/alarming</u>\n\n
     <b>Icon created by</b>\n<u>http://en.wikipedia.org/wiki/User:Tkgd2007</u>\n\n
@@ -215,6 +217,10 @@
     <string name="dberror">Sorry, the alarm could not be set.</string>
 
     <!-- Snooze Dialog Preference -->
+    <string name="quickalarm_title">Show Quick Snooze</string>
+    <string name="quickalarm_summary">Use Quick Snooze for short timers</string>
+
+
     <string name="snooze_title">Snooze duration</string>
     <string name="snooze_message">How long snooze button will pause</string>
     <string name="snooze_disabled">Snooze disabled</string>

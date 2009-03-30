@@ -111,7 +111,12 @@ class AlarmKlaxon implements Alarms.AlarmSettings {
         mAlarmId = alarmId;
 
         /* this will call reportAlarm() callback */
-        Alarms.getAlarm(contentResolver, this, mAlarmId);
+        if (alarmId == 0) { // quick alarm
+          Alarms.getQuickAlarm(context, this);
+        }
+        else {
+          Alarms.getAlarm(contentResolver, this, mAlarmId);
+        }
 
         if (Log.LOGV) Log.v("AlarmKlaxon.play() " + mAlarmId + " alert " + mAlert);
 

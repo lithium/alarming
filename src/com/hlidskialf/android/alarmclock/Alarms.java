@@ -351,6 +351,29 @@ public class Alarms {
         contentResolver.delete(uri, "", null);
     }
 
+    public synchronized static void getQuickAlarm(Context context, AlarmSettings alarmSettings) {
+      SharedPreferences prefs = context.getSharedPreferences(AlarmClock.PREFERENCES, 0);
+      int id = 0;
+      int hour = 0;
+      int minutes = 0;
+      int daysofweek = 0;
+      boolean enabled = true;
+      boolean vibrate = false;
+      String message = null;
+      String alert = prefs.getString("default_alarm", Settings.System.DEFAULT_RINGTONE_URI.toString());
+      int snooze = 0;
+      int duration = 0;
+      int delay = prefs.getInt("default_delay",0);
+      boolean vibrateOnly = false;
+      int volume = prefs.getInt("default_volume",100);
+      int crescendo = prefs.getInt("default_crescendo",0);
+      String name = context.getString(R.string.quick_alarm);
+      alarmSettings.reportAlarm(
+              id, enabled, hour, minutes, new DaysOfWeek(daysofweek), vibrate, 
+              snooze, duration, delay, vibrateOnly, volume, crescendo, name,
+              message, alert);
+    }
+
     /**
      * Queries all alarms
      * @return cursor over all alarms

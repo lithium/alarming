@@ -16,7 +16,7 @@ import android.provider.Settings;
 
 public class AlarmClockPreferences extends PreferenceActivity
 {
-    private CheckBoxPreference mShowClockPref,mBigClockPref,mBigClockSleepPref,mCaptchaDismissPref,mCaptchaSnoozePref;
+    private CheckBoxPreference mShowClockPref,mBigClockPref,mBigClockSleepPref,mCaptchaDismissPref,mCaptchaSnoozePref,mQuickAlarmPref;
     private AlarmPreference mAlarmPref;
     private RepeatPreference mRepeatPref;
     private SliderPreference mVolumePref;
@@ -46,6 +46,7 @@ public class AlarmClockPreferences extends PreferenceActivity
         mCaptchaSnoozePref = (CheckBoxPreference) findPreference("captcha_on_snooze");
         mBigClockPref = (CheckBoxPreference) findPreference("bigclock_enable");
         mBigClockSleepPref = (CheckBoxPreference) findPreference("bigclock_wake_lock");
+        mQuickAlarmPref = (CheckBoxPreference) findPreference("quickalarm_enable");
 
         mAlarmPref = (AlarmPreference) findPreference("default_alarm");
         mRepeatPref = (RepeatPreference) findPreference("default_repeat");
@@ -56,6 +57,12 @@ public class AlarmClockPreferences extends PreferenceActivity
         mDelayPref = (SliderPreference) findPreference("default_delay");
 
 
+        mQuickAlarmPref.setOnPreferenceChangeListener( new Preference.OnPreferenceChangeListener() {
+            public boolean onPreferenceChange(Preference pref, Object newValue) {
+                mSharedPrefs.edit().putBoolean("quickalarm_enable", (Boolean)newValue).commit();
+                return true;
+            }
+        });
         mShowClockPref.setOnPreferenceChangeListener( new Preference.OnPreferenceChangeListener() {
             public boolean onPreferenceChange(Preference pref, Object newValue) {
                 mSharedPrefs.edit().putBoolean("show_clock", (Boolean)newValue).commit();
