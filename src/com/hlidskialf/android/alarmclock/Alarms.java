@@ -41,7 +41,7 @@ import java.util.Calendar;
  */
 public class Alarms {
 
-    public final static String ALARM_ALERT_ACTION = "com.hlidskialf.android.alarmclock.ALARM_ALERT";
+    public final static String ALARM_ALERT_ACTION = "com.hlidskialf.android.alarmclock.beta.ALARM_ALERT";
     public final static String ID = "alarm_id";
     public final static String TIME = "alarm_time";
     public final static String IS_DEMO = "alarm_is_demo";

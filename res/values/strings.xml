@@ -17,10 +17,10 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <!-- -->
     <!-- Label shown on launcher icon -->
-    <string name="app_label">Alarming!</string>
+    <string name="app_label">Alarming! Beta</string>
 
     <string name="app_description">Alarming! - AlarmClock enhanced</string>
-    <string name="app_version">1.2.5</string>
+    <string name="app_version">&#946;1.2.6</string>
     <string name="app_preferences">Alarming! Preferences</string>
 	
     <string name="preferences">Preferences</string>
