@@ -50,10 +50,10 @@ public class Alarms {
     final static String PREF_SNOOZE_TIME = "snooze_time";
 
     private final static String DM12 = "E h:mm aa";
-    private final static String DM24 = "E k:mm";
+    private final static String DM24 = "E H:mm";
 
     private final static String M12 = "h:mm aa";
-    private final static String M24 = "k:mm";
+    private final static String M24 = "H:mm";
 
     private final static String SM12 = "h:mm:ss";
     private final static String SM24 = "k:mm:ss";
@@ -486,9 +486,11 @@ public class Alarms {
         resolver.update(ContentUris.withAppendedId(AlarmColumns.CONTENT_URI, id),
                         values, null, null);
 
-        int aid = disableSnoozeAlert(context);
-        if (aid != -1 && aid != id) enableAlarmInternal(context, aid, false);
-        setNextAlert(context);
+        if (getSnoozeAlarmId(context) != 0) { //not quick snooze
+          int aid = disableSnoozeAlert(context);
+          if (aid != -1 && aid != id) enableAlarmInternal(context, aid, false);
+          setNextAlert(context);
+        }
     }
 
     /**
