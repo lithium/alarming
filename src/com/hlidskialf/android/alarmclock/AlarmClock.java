@@ -128,10 +128,12 @@ public class AlarmClock extends Activity {
             onButton.setOnClickListener(new OnClickListener() {
                     public void onClick(View v) {
                         boolean isChecked = ((CheckBox) v).isChecked();
-                        Alarms.enableAlarm(AlarmClock.this, id, isChecked);
                         if (isChecked) {
                             SetAlarm.popAlarmSetToast(
                                     AlarmClock.this, hour, minutes, daysOfWeek);
+                        }
+                        if (mPrefs.getInt(Alarms.PREF_SNOOZE_ID, -1) != 0) { //not quick snooze 
+                          Alarms.enableAlarm(AlarmClock.this, id, isChecked);
                         }
                     }
             });
