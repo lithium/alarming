@@ -260,11 +260,11 @@ public class AlarmClock extends Activity {
             }
         });
 
+        setVolumeControlStream(android.media.AudioManager.STREAM_ALARM);
 
         setClockVisibility(mPrefs.getBoolean(PREF_SHOW_CLOCK, true));
 
         mCaptchaDismiss = mPrefs.getBoolean("captcha_on_dismiss", false);
-
 
         updateQuickAlarmVisibility();
     }

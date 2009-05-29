@@ -208,7 +208,7 @@ public class Alarms {
         /**
          * The default sort order for this table
          */
-        public static final String DEFAULT_SORT_ORDER = "_id ASC";
+        public static final String DEFAULT_SORT_ORDER = "hour,minutes ASC";
 
         /**
          * Hour in 24-hour localtime 0 - 23.
